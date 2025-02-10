@@ -1,0 +1,25 @@
+# LaTeX temporary files
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.dvi
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# PDF output - usually a good idea to track this
+# *.pdf
+
+# BibTeX
+*.bib.bak
+*.sav
+
+# Text editor temporary files
+*~
+*.backup
+*.swp
+.DS_Store 

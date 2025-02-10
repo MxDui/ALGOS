@@ -1,0 +1,39 @@
+\section{Ejercicio 1}
+Dado un entero positivo n, determinar el valor de $\floor{\log(n)}$.
+
+\subsection*{Solución}
+\subsubsection*{Algoritmo}
+\begin{algorithm}[H]
+\caption{Calcular $\floor{\log(n)}$}
+\begin{algorithmic}[1]
+\REQUIRE Un entero positivo $n$
+\ENSURE El valor de $\floor{\log(n)}$
+\STATE $count \gets 0$
+\IF{$n \leq 1$}
+    \RETURN $0$
+\ENDIF
+\WHILE{$n > 1$}
+    \STATE $n \gets n/2$
+    \STATE $count \gets count + 1$
+\ENDWHILE
+\RETURN $count$
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection*{Análisis de complejidad}
+\begin{enumerate}
+\item \textbf{Tiempo de ejecución}
+  \begin{itemize}
+    \item Observa que en cada iteración del ciclo \textbf{while} la variable $n$ se divide entre 2. Por tanto, el número de iteraciones que el bucle realizará hasta que $n \leq 1$ es aproximadamente $\log_2(n)$.
+    \item Cada iteración ejecuta un conjunto constante de operaciones (comparación, división y asignaciones), que podemos considerar de costo constante, $O(1)$.
+    \item Como consecuencia, el tiempo total de ejecución es $O(\log n)$.
+  \end{itemize}
+
+\item \textbf{Espacio en memoria}
+  \begin{itemize}
+    \item El algoritmo solo utiliza un número constante de variables adicionales ($count$ y la propia $n$), por lo que el uso de espacio es constante.
+    \item Por lo tanto, la complejidad espacial es $O(1)$.
+  \end{itemize}
+\end{enumerate}
+
+En resumen, la complejidad temporal del algoritmo es $O(\log n)$ y la complejidad espacial es $O(1)$. 
