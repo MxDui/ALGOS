@@ -3,7 +3,21 @@ Dado un arreglo A de n enteros y un entero objetivo K, ¿existen un par de índi
 
 \subsection*{Solución}
 \subsubsection*{Algoritmo}
-[Aquí irá el pseudocódigo]
+\begin{algorithm}[H]
+\caption{Encontrar par de números que suman K}
+\begin{algorithmic}[1]
+\REQUIRE Un arreglo $A$ de $n$ enteros y un entero objetivo $K$
+\ENSURE Verdadero si existe un par de índices $i \neq j$ tales que $A[i] + A[j] = K$
+\STATE $hashMap \gets \{\}$
+\FOR{$i \gets 0$ \TO $n-1$}
+    \IF{$hashMap.containsKey(K - A[i])$}
+        \RETURN true
+    \ENDIF
+    \STATE $hashMap.put(A[i], i)$
+\ENDFOR
+\RETURN false
+\end{algorithmic}
+\end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
 [Aquí irá el análisis] 
