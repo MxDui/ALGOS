@@ -3,7 +3,46 @@ Dado un entero positivo n, determinar la cantidad de números primos menores o i
 
 \subsection*{Solución}
 \subsubsection*{Algoritmo}
-[Aquí irá el pseudocódigo]
+\begin{algorithm}[H]
+\caption{Contar números primos usando la Criba de Eratóstenes}
+\begin{algorithmic}[1]
+\REQUIRE Un entero positivo $n$
+\ENSURE La cantidad de números primos menores o iguales a $n$
+\STATE $esPrimo \gets [true] * (n+1)$ \COMMENT{Arreglo booleano inicializado en verdadero}
+\STATE $esPrimo[0] \gets false$
+\STATE $esPrimo[1] \gets false$
+\STATE $contador \gets 0$
+\FOR{$i \gets 2$ \TO $\sqrt{n}$}
+    \IF{$esPrimo[i]$}
+        \FOR{$j \gets i^2$ \TO $n$ \textbf{step} $i$}
+            \STATE $esPrimo[j] \gets false$
+        \ENDFOR
+    \ENDIF
+\ENDFOR
+\FOR{$i \gets 2$ \TO $n$}
+    \IF{$esPrimo[i]$}
+        \STATE $contador \gets contador + 1$
+    \ENDIF
+\ENDFOR
+\RETURN $contador$
+\end{algorithmic}
+\end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
-[Aquí irá el análisis] 
+\paragraph{Complejidad Temporal:}
+El algoritmo realiza las siguientes operaciones:
+\begin{itemize}
+    \item Inicialización del arreglo: $O(n)$
+    \item Marcado de múltiplos: $O(n \log \log n)$
+    \item Conteo final de primos: $O(n)$
+\end{itemize}
+Por lo tanto, la complejidad temporal total es:
+\[
+O(n \log \log n)
+\]
+
+\paragraph{Complejidad Espacial:}
+El algoritmo utiliza un arreglo booleano de tamaño $n+1$. Por ello, la complejidad espacial es:
+\[
+O(n)
+\] 

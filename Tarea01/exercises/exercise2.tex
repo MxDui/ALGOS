@@ -20,4 +20,26 @@ Dado un arreglo A de n enteros y un entero objetivo K, ¿existen un par de índi
 \end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
-[Aquí irá el análisis] 
+\paragraph{Complejidad Temporal:}
+El algoritmo realiza las siguientes operaciones:
+\begin{itemize}
+    \item Recorre el arreglo una sola vez, visitando sus $n$ elementos
+    \item Para cada elemento realiza operaciones de hash (búsqueda e inserción) que son $O(1)$ en promedio
+\end{itemize}
+Por lo tanto, la complejidad temporal total es:
+\[
+O(n)
+\]
+
+\paragraph{Complejidad Espacial:}
+El algoritmo utiliza un \texttt{hashMap} que puede almacenar hasta $n$ elementos. Por ello, la complejidad espacial es:
+\[
+O(n)
+\]
+
+\paragraph{Resumen:}  
+- **Tiempo Promedio:** \(O(n)\)  
+- **Tiempo Peor Caso:** \(O(n^2)\) (escenario teórico con colisiones excesivas)  
+- **Espacio:** \(O(n)\)
+
+En conclusión, el algoritmo es eficiente en la mayoría de los casos prácticos, logrando encontrar el par de números que suman \(K\) en tiempo lineal con respecto al tamaño del arreglo.

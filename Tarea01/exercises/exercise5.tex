@@ -3,7 +3,53 @@ Dado un arreglo A de n enteros, ¿existe un elemento de A tal que aparece en A a
 
 \subsection*{Solución}
 \subsubsection*{Algoritmo}
-[Aquí irá el pseudocódigo]
+\begin{algorithm}[H]
+\caption{Encontrar elemento mayoritario (apariciones $\geq n/2$)}
+\begin{algorithmic}[1]
+\REQUIRE Un arreglo \( A \) de \( n \) enteros.
+\ENSURE Un elemento que aparece al menos \( n/2 \) veces, o \(\text{null}\) si no existe.
+\STATE \( candidate \gets \text{null} \)
+\STATE \( count \gets 0 \)
+\FOR{cada \( x \) en \( A \)}
+    \IF{\( count = 0 \)}
+        \STATE \( candidate \gets x \)
+        \STATE \( count \gets 1 \)
+    \ELSE
+        \IF{\( candidate = x \)}
+            \STATE \( count \gets count + 1 \)
+        \ELSE
+            \STATE \( count \gets count - 1 \)
+        \ENDIF
+    \ENDIF
+\ENDFOR
+\STATE \( occurrence \gets 0 \)
+\FOR{cada \( x \) en \( A \)}
+    \IF{\( x = candidate \)}
+         \STATE \( occurrence \gets occurrence + 1 \)
+    \ENDIF
+\ENDFOR
+\IF{\( occurrence \ge \frac{n}{2} \)}
+    \RETURN \( candidate \)
+\ELSE
+    \RETURN \(\text{null}\) \COMMENT{No existe elemento mayoritario}
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
-[Aquí irá el análisis] 
+\paragraph{Complejidad Temporal:}
+El algoritmo realiza dos recorridos sobre el arreglo \( A \):
+\begin{itemize}
+    \item El primer recorrido (líneas 3 a 13) para identificar un candidato mayoritario, con una complejidad de \( O(n) \).
+    \item El segundo recorrido (líneas 14 a 18) para verificar que el candidato realmente aparece al menos \( n/2 \) veces, también con una complejidad de \( O(n) \).
+\end{itemize}
+Por lo tanto, la complejidad temporal total es:
+\[
+O(n) + O(n) = O(n)
+\]
+
+\paragraph{Complejidad Espacial:}
+El algoritmo utiliza únicamente un número constante de variables adicionales (\( candidate \), \( count \) y \( occurrence \)). Por ello, la complejidad espacial es:
+\[
+O(1)
+\]
