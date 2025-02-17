@@ -20,6 +20,29 @@ Dado un arreglo A de n enteros y un entero objetivo K, ¿existen un par de índi
 \end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Código & Operaciones & Total \\
+  \hline
+ $hashMap \gets \{\}$    & 1 asignación.   & 1 \\
+  \hline
+  for($i \gets 0$ to $n-1$)    & 1 salto (for), 1 escritura (i), 1 lectura (n), 1 resta & 4    \\
+  \hline
+  if $hashMap.containsKey(K - A[i])$ & 1 salto, 3 lecturas (A, i, K), 1 resta y una operación hash& 5 \\
+  \hline
+  Return True & 1 salto & 1 \\
+  \hline
+  end if & 1 salto & 1 \\
+  \hline
+  $hashMap.put(A[i], i)$ & 2 lecturas (A, i) y la operación del hash & 3 \\
+  \hline
+  end for & 1 salto & 1 \\
+  \hline
+  return false & 1 salto & 1
+\end{tabular}
+Las operaciones hash según la \href{https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html}{documentación de Java} son constantes.
+Las que se hacen si o si son la asignación del Hash, el for y el return false, es decir 1+4+1 = 6, mientras que en una sola iteración hace 17 operaciones, ahora para el for ocurre lo siguiente:
+
 \paragraph{Complejidad Temporal:}
 El algoritmo realiza las siguientes operaciones:
 \begin{itemize}
@@ -28,8 +51,9 @@ El algoritmo realiza las siguientes operaciones:
 \end{itemize}
 Por lo tanto, la complejidad temporal total es:
 \[
-O(n)
+O(17n+6)
 \]
+Pero nuevamente, se pueden quitar las constantes por lo que nos queda solamente $O(n)$
 
 \paragraph{Complejidad Espacial:}
 El algoritmo utiliza un \texttt{hashMap} que puede almacenar hasta $n$ elementos. Por ello, la complejidad espacial es:
