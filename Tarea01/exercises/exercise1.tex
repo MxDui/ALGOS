@@ -21,6 +21,21 @@ Dado un entero positivo n, determinar el valor de $\lfloor\log(n)\rfloor$.
 \end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
+\begin{enumerate}
+    \item $count \leftarrow 0$ tiene 1 Asignación, tiempo constante
+    \item if $n \leq 1$ tiene 1 salto, 1 lectura (lee a n), 1 comparación (compara n con 1)
+    \item return 0 tiene 1 salto 
+    \item  endif tiene 1 salto
+    \item while $n > 1$ do tiene 1 salto, 1 lectura (lee a n) y 1 comparación (compara n con 1)
+    \item $n \gets n/2$ tiene 1 lectura (lee n), 1 operación aritmetica (la división) y finalmente 1 escritura (escribe a n)
+    \item $count \gets count + 1$ tiene 1 lectura (count), 1 suma y 1 escritura.
+    \item end while tiene 1 salto
+    \item return count tiene un salto y una lectura.
+\end{enumerate}
+En tiempo si hacemos un analisis "básico" en una sola operación vemos que el 1 \textbf{se hace siempre} (es constante), el if puede o no hacerse por lo que a todo el if (es decir a 2,3 y 4) le pondremos \textbf{3} y a su return \textbf{$\frac{1}{2}$}, el while en una sola iteración tiene 3 + 3 + 3 + 1 = 10 operaciones, y finalmente el return tiene 2 operaciones, pero como este return depende de que no se haya hecho el primer return tambien le pondremos $\frac{1}{2}$, por lo que ese return tiene realmente \textbf{1 y media operaciones.} \\
+Si contamos todo en una sola iteracion tenemos que la linea 1 se va a hacer siempre (1 operación), al igual que el if (ya que se va a comprobar si se cumple o no, tenemos 3 operaciones) y uno de los dos return se va a cumplir tambien (1 operación) de ambos return y 1 lectura del "count" final, por lo que al final tenemos 6 operaciones que se hacen si o si, ahora veamos que pasa con el while.
+
+\subsubsection*{Análisis de complejidad}
 \paragraph{Complejidad Temporal:}
 El algoritmo realiza divisiones sucesivas entre 2 hasta llegar a 1:
 \begin{itemize}
@@ -30,8 +45,10 @@ El algoritmo realiza divisiones sucesivas entre 2 hasta llegar a 1:
 \end{itemize}
 Por lo tanto, la complejidad temporal total es:
 \[
-O(\log n)
+O(\log n) + 6
 \]
+
+Pero como el logaritmo es más grande podemos quitarle la suma, por lo que queda simplemente como \textbf{$O(\log n)$}
 
 \paragraph{Complejidad Espacial:}
 El algoritmo utiliza un número constante de variables adicionales ($count$ y $n$). Por ello, la complejidad espacial es:
