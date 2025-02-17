@@ -20,9 +20,11 @@ Dado un arreglo A de n enteros y un entero objetivo K, ¿existen un par de índi
 \end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
-\begin{tabular}{|c|c|c|}
+\begin{center}
+\small
+\begin{tabular}{|p{4.5cm}|p{6.5cm}|c|}
   \hline
-  Código & Operaciones & Total \\
+  \textbf{Código} & \textbf{Operaciones} & \textbf{Total} \\
   \hline
  $hashMap \gets \{\}$    & 1 asignación.   & 1 \\
   \hline
@@ -38,8 +40,10 @@ Dado un arreglo A de n enteros y un entero objetivo K, ¿existen un par de índi
   \hline
   end for & 1 salto & 1 \\
   \hline
-  return false & 1 salto & 1
+  return false & 1 salto & 1 \\
+  \hline
 \end{tabular}
+\end{center}
 Las operaciones hash según la \href{https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html}{documentación de Java} son constantes.
 Las que se hacen si o si son la asignación del Hash, el for y el return false, es decir 1+4+1 = 6, mientras que en una sola iteración hace 17 operaciones, ahora para el for ocurre lo siguiente:
 
@@ -61,9 +65,3 @@ El algoritmo utiliza un \texttt{hashMap} que puede almacenar hasta $n$ elementos
 O(n)
 \]
 
-\paragraph{Resumen:}  
-- **Tiempo Promedio:** \(O(n)\)  
-- **Tiempo Peor Caso:** \(O(n^2)\) (escenario teórico con colisiones excesivas)  
-- **Espacio:** \(O(n)\)
-
-En conclusión, el algoritmo es eficiente en la mayoría de los casos prácticos, logrando encontrar el par de números que suman \(K\) en tiempo lineal con respecto al tamaño del arreglo.
