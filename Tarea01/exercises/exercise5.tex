@@ -37,6 +37,65 @@ Dado un arreglo A de n enteros, ¿existe un elemento de A tal que aparece en A a
 \end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
+Para este algoritmo tenemos las siguientes operaciones:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Código} & \textbf{Operaciones} & \textbf{Total} \\
+        \hline
+        $candidate \gets \text{null}$ & 1 asignación & 1 \\
+        \hline
+        $count \gets 0$ & 1 asignación & 1 \\
+        \hline
+        \textbf{for} (cada $x$ en $A$) & 1 salto, 2 lecturas ($A$) & 2 \\
+        \hline
+        if $count = 0$ & 1 salto, 1 lectura ($count$) y 1 comparación & 3 \\
+        \hline
+        $candidate \gets x$ & 1 escritura ($candidate$) & 1 \\
+        \hline
+        $count \gets 1$ & 1 escritura ($count$) & 1 \\
+        \hline
+        else if $candidate = x$ & 1 salto, 2 lecturas ($candidate$, $x$), 1 comparación & 4 \\
+        \hline
+        $count \gets count + 1$ & 1 lectura ($count$), 1 suma, 1 escritura & 3 \\
+        \hline
+        else & 1 salto & 1 \\
+        \hline
+        $count \gets count - 1$ & 1 lectura ($count$), 1 resta, 1 escritura & 3 \\
+        \hline
+        end if & 1 salto & 1 \\
+        \hline
+        end for & 1 salto & 1 \\
+        \hline
+        $occurrence \gets 0$ & 1 asignación & 1 \\
+        \hline
+        \textbf{for} (cada $x$ en $A$) & 1 salto, 2 lecturas ($A$) & 3 \\
+        \hline
+        if $x = candidate$ & 1 salto, 2 lecturas ($x$, $candidate$), 1 comparación & 4 \\
+        \hline
+        $occurrence \gets occurrence + 1$ & 1 lectura ($occurrence$), 1 suma, 1 escritura & 3 \\
+        \hline
+        end if & 1 salto & 1 \\
+        \hline
+        end for & 1 salto & 1 \\
+        \hline
+        if $occurrence \geq \frac{n}{2}$ & 1 salto, 2 lecturas ($occurrence$, n), 1 división & 4 \\
+        \hline
+        return $candidate$ & 1 salto, 1 lectura & 2 \\
+        \hline
+        else return $\text{null}$ & 1 salto & 1 \\
+        \hline
+        end if & 1 salto & 1 \\
+        \hline
+    \end{tabular}
+    \caption{Análisis de complejidad del algoritmo de Boyer-Moore para encontrar el elemento mayoritario}
+    \label{tabla:boyer-moore}
+\end{table}
+Donde las operaciones que se hacen siempre son del 1 al 4, de la 14 a la 16, la 21, uno de los dos return y la 25, por lo que al contarlas todas tenemos 1+1+2+3+3+4+3+4+1+1 = 23.
+Mientras que para los ciclos for ocurre lo siguiente:
+
+
 \paragraph{Complejidad Temporal:}
 El algoritmo realiza dos recorridos sobre el arreglo \( A \):
 \begin{itemize}
@@ -45,7 +104,7 @@ El algoritmo realiza dos recorridos sobre el arreglo \( A \):
 \end{itemize}
 Por lo tanto, la complejidad temporal total es:
 \[
-O(n) + O(n) = O(n)
+O(n) + O(n) + 23 = O(n)
 \]
 
 \paragraph{Complejidad Espacial:}
