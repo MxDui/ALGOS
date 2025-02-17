@@ -29,7 +29,53 @@ Dado un entero positivo n, determinar la cantidad de números primos menores o i
 \end{algorithm}
 
 \subsubsection*{Análisis de complejidad}
+Tenemos la siguiente tabla
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Código} & \textbf{Operaciones} & \textbf{Total} \\
+        \hline
+        $esPrimo \gets [true] * (n+1)$ & 1 asignación + 1 multiplicacion + 1 lectura (n) + 1 suma & 4 \\
+        \hline
+        $esPrimo[0] \gets false$ & 1 escritura & 1 \\
+        \hline
+        $esPrimo[1] \gets false$ & 1 escritura & 1 \\
+        \hline
+        $contador \gets 0$ & 1 escritura & 1 \\
+        \hline
+        \textbf{for} ($i \gets 2$ to $\sqrt{n}$) & 1 salto, 1 escritura ($i$), 1 lectura ($n$), 1 raíz cuadrada & 4 \\
+        \hline
+        if $esPrimo[i]$ & 1 salto, 1 lectura ($esPrimo[i]$) & 2\\
+        \hline
+        \textbf{for} ($j \gets i^2$ to $n$, step $i$) & 1 escritura, 1 multiplicación (i * i), 2 lectura & 4 \\
+        \hline
+        $esPrimo[j] \gets false$ & 1 escritura & 1 \\
+        \hline
+        end if & 1 salto & 1 \\
+        \hline
+        end for & 1 salto & 1 \\
+        \hline
+        \textbf{for} ($i \gets 2$ to $n$) & 1 salto, 1 escritura ($i$), 1 lectura ($n$) & 3 \\
+        \hline
+        if $esPrimo[i]$ & 1 salto, 2 lectura ($esPrimo[i]$, i) & 3 \\
+        \hline
+        $contador \gets contador + 1$ & 1 lectura ($contador$), 1 suma, 1 escritura & 3 \\
+        \hline
+        end if & 1 salto & 1 \\
+        \hline
+        end for & 1 salto & 1 \\
+        \hline
+        return $contador$ & 1 salto, 1 lectura & 2 \\
+        \hline
+    \end{tabular}
+    \caption{Análisis de complejidad del algoritmo de la Criba de Eratóstenes}
+    \label{tabla:criba}
+\end{table}
+
 \paragraph{Complejidad Temporal:}
+El algoritmo si o si hace las primeras 6 lineas, y las últimas, de la 11 a la 17, por lo que el algotimo tiene 13+14 = 27, en el ciclo for ocurre lo siguiente:
+
 El algoritmo realiza las siguientes operaciones:
 \begin{itemize}
     \item Inicialización del arreglo: $O(n)$
@@ -38,8 +84,9 @@ El algoritmo realiza las siguientes operaciones:
 \end{itemize}
 Por lo tanto, la complejidad temporal total es:
 \[
-O(n \log \log n)
+O(n \log \log n + 26)
 \]
+Pero como se pueden quitar las constantes solo nos queda $O(n \log \log n)$
 
 \paragraph{Complejidad Espacial:}
 El algoritmo utiliza un arreglo booleano de tamaño $n+1$. Por ello, la complejidad espacial es:
