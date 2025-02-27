@@ -150,19 +150,44 @@
   \[
     f(n) = n!, \quad g(n) = n^{n}.
   \]
+  Queremos obtener:
+  \[
+  \lim_{x \to \infty}(\frac{n!}{n^n})
+  \]
   % Explicación:
   % 1. Se aplica la propiedad logarítmica: \(\log(n^2)= 2\log(n)\), obteniéndose:
-  \[
-    f(n) = n \cdot 2\log(n)= 2n\log(n).
-  \]
   % 2. Como g(n) = n log(n), el cociente es:
-  \[
-    \frac{f(n)}{g(n)} = \frac{2n\log(n)}{n\log(n)} = 2.
-  \]
   % 3. El cociente constante implica que ambas funciones tienen el mismo orden de crecimiento.
-  \textbf{Análisis:}
+  \textbf{Análisis:}\\
+  Usamos la definición de convergencia de series "Si $\sum a_n$ es convergente entonces $\lim_{x \to \infty}(a_n)=0$". Por lo que verificamos si es convergente o no, para lo que aplicamos el criterio de d'Alembert o de la razón, que nos dice:
+  \\ Si existe una N tal que para toda $n \geq N$, $a_n \neq 0$ y $\lim_{x \to \infty}|\frac{a_n+1}{a_n}|=L$:
+  \begin{itemize}
+      \item Si L < 1, entonces la suma es convergente
+      \item Los otros casos no nos interesan-
+  \end{itemize}
+  Por lo que desarrollamos aplicando el criterio de la razón y luego simplificamos para poder obtener el limite:
   \[
-    f(n) \in \Theta\bigl(g(n)\bigr).
+  \sum_{a=1}^{\infty}(1\frac{n!}{n^n}) = |\frac{\frac{(n+1)!}{(n+1)^{n+1}}}{\frac{n!}{n^n}}| = |\frac{(n+1)!n^n}{(n+1)^{n+1}n!}|
+  \]
+  Podemos eliminar los factoriales con la propiedad $\frac{n!}{(n-m)!}=n$, por lo que nos daría $\frac{(n+1)!}{n!}=(n+1)$. Podemos cancelar el n+1 de arriba con un n+1 de abajo ya que sería como tener $(n+1)^0$
+  \[
+  = |\frac{n^n(n+1)}{(n+1)^{n+1}}| = |\frac{n^n}{(n+1)^{n}}| = \frac{|n^n|}{|(n+1)^{n}|}
+  \]
+  Ahora ya sumplificada podemos obtener su limite, como n tiende a infinito siempre va a ser positivo por lo que podemos quitar los valores absolutos y podemos sacar el exponente en común:
+  \[
+  \lim_{x \to \infty}\frac{|n^n|}{|(n+1)^{n}|} = \lim_{x \to \infty}\frac{n^n}{(n+1)^{n}} = \lim_{x \to \infty}(\frac{n}{n+1})^{n}
+  \]
+  Podemos aplicar la regla $\lim_{x \to \infty}(\frac{x}{x+k})^x=e^{-k}$
+  \[
+  = \lim_{x \to \infty}(\frac{n}{n+1})^{n} = e^{-1} = \frac{1}{e} = L
+  \]
+Como L es menor a 1, por el criterio de la razón podemos decir que es convergente, y como es convergente entonces
+  \[
+  \lim_{x \to \infty}(\frac{n!}{n^n}) = 0
+  \]
+  Por lo que al final tenemos:
+  \[
+    f(n) \in o\bigl(g(n)\bigr).
   \]
 
   \item \textbf{Par 5:}
@@ -182,7 +207,7 @@
   \textbf{Análisis:}
   Vamos a hacer un cambio de variable, vamos a cambiar $\log n$ por t para luego aplicar L´hopital, por lo que nos quedaría como:
   \[
-  \lim_{x \to \infty} \frac{\log(t)}{t^{\frac{1}{2}}} = \frac{\log(t)´}{t^{\frac{1}{2}´}} = \frac{\frac{1}{t}}{\frac{1}{2}t^{-1/2}} = \frac{\frac{1}{t}}{\frac{1}{2t^{1/2}}} = \frac{2t^{1/2}}{t} 
+  \lim_{x \to \infty} \frac{\log(t)}{t^{\frac{1}{2}}} = \frac{\log(t)'}{t^{\frac{1}{2}'}} = \frac{\frac{1}{t}}{\frac{1}{2}t^{-1/2}} = \frac{\frac{1}{t}}{\frac{1}{2t^{1/2}}} = \frac{2t^{1/2}}{t} 
   \]
   Aplicamos las leyes de los exponentes $\frac{x^a}{x^b}= \frac{1}{x^{b-a}}$
   \[
