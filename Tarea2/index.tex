@@ -148,7 +148,7 @@
   \item \textbf{Par 4:} 
   % Definición de las funciones.
   \[
-    f(n) = n \,\log(n^2), \quad g(n) = n \,\log(n).
+    f(n) = n!, \quad g(n) = n^{n}.
   \]
   % Explicación:
   % 1. Se aplica la propiedad logarítmica: \(\log(n^2)= 2\log(n)\), obteniéndose:
@@ -180,9 +180,15 @@
   \]
   % 5. Al tomar el límite cuando \(n \to \infty\), el denominador domina al numerador, y el límite es 0.
   \textbf{Análisis:}
+  Vamos a hacer un cambio de variable, vamos a cambiar $\log n$ por t para luego aplicar L´hopital, por lo que nos quedaría como:
   \[
-    \lim_{n \to \infty} \frac{\log(\log(n))}{(\log(n))^{1/2}} = 0.
+  \lim_{x \to \infty} \frac{\log(t)}{t^{\frac{1}{2}}} = \frac{\log(t)´}{t^{\frac{1}{2}´}} = \frac{\frac{1}{t}}{\frac{1}{2}t^{-1/2}} = \frac{\frac{1}{t}}{\frac{1}{2t^{1/2}}} = \frac{2t^{1/2}}{t} 
   \]
+  Aplicamos las leyes de los exponentes $\frac{x^a}{x^b}= \frac{1}{x^{b-a}}$
+  \[
+  \lim_{x \to \infty} \frac{2}{t^{1-1/2}} = \lim_{x \to \infty} \frac{2}{t^{1/2}} \text{ aplicamos la propiedad } lim_{x \to \infty}(\frac{c}{x^a})= 0
+  \]
+  y como tenemos que el limite es cero entonces:    
   % Concluimos que f(n) crece mucho más despacio que g(n).
   \[
     f(n) \in o\bigl(g(n)\bigr).
@@ -225,29 +231,23 @@
   \item \textbf{Par 7:}
   % Definición de las funciones.
   \[
-    f(n) = \log\bigl(n^{\,n \log n}\bigr), \quad g(n) = \sqrt{n \,\log(n)}.
+    f(n) = log(n\sqrt{n}), \quad g(n) = \sqrt{n} \log(n)
   \]
   % Explicación:
   % 1. Aplicamos la propiedad logarítmica para f(n): 
-  \[
-    \log\bigl(n^{\,n \log n}\bigr) = n \log n \cdot \log n = n\,(\log n)^2.
-  \]
-  % 2. Se reescribe g(n) en forma de potencias:
-  \[
-    g(n) = \sqrt{n\,\log(n)} = (n\,\log(n))^{1/2} = n^{1/2}\,(\log(n))^{1/2}.
-  \]
-  % 3. Se forma el cociente:
-  \[
-    \frac{f(n)}{g(n)} = \frac{n\,(\log(n))^2}{n^{1/2}\,(\log(n))^{1/2}} = n^{1/2}\,(\log(n))^{3/2}.
-  \]
   % 4. Dado que tanto \(n^{1/2}\) como \((\log(n))^{3/2}\) tienden a infinito al crecer n, su producto también lo hace.
   \textbf{Análisis:}
+  Aplicando las leyes de los exponentes $\frac{1}{a^b}=a^-b$
   \[
-    \lim_{n \to \infty} n^{1/2}\,(\log(n))^{3/2} = \infty.
+  \lim_{n \to \infty}(\frac{ln(n\sqrt{n})}{\sqrt{n}ln(n)}) = \lim_{n \to \infty}(\frac{ln(nn^{1/2})}{\sqrt{n}ln(n)}) = \lim_{n \to \infty}(\frac{ln(n^{3/2})}{\sqrt{n}ln(n)})= \lim_{n \to \infty}(\frac{\frac{3}{2}ln(n)}{\sqrt{n}ln(n)}) = 
   \]
+  \[
+  \lim_{n \to \infty}(\frac{3\cancel{ln(n)}}{2\sqrt{n}\cancel{ln(n)}}) = \lim_{n \to \infty}(\frac{3}{2\sqrt{n})}) = \frac{3}{2} \frac{\lim_{n \to \infty} 1}{\lim_{n \to \infty}\sqrt{n}} = \frac{3}{2}\frac{1}{\sqrt{\infty}} =\frac{3}{2} \frac{1}{\infty} = \frac{3}{2}*\frac{1}{\infty} = \frac{3}{2}*0 = 0
+  \]
+  
   Así,
   \[
-    f(n) \in \omega\bigl(g(n)\bigr).
+    f(n) \in o\bigl(g(n)\bigr).
   \]
 
   \item \textbf{Par 8:}
