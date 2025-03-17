@@ -1,111 +1,157 @@
-# Algoritmos de Búsqueda en Arreglos
+# Algoritmos de Búsqueda
 
-Este programa implementa cuatro algoritmos de búsqueda en arreglos ordenados:
+Esta biblioteca proporciona implementaciones de varios algoritmos de búsqueda, junto con utilidades para probar, comparar y visualizar su rendimiento.
 
-1. Búsqueda Lineal
-2. Búsqueda Binaria
-3. Búsqueda Exponencial
-4. Búsqueda por Interpolación
+## Algoritmos Implementados
 
-## Requisitos
+1. **Búsqueda Lineal**
 
-- Python 3.x
-- Matplotlib (opcional, para la comparación de rendimiento)
+   - Complejidad Temporal: O(n)
+   - Complejidad Espacial: O(1)
+   - Funciona en arreglos no ordenados
+
+2. **Búsqueda Binaria**
+
+   - Complejidad Temporal: O(log n)
+   - Complejidad Espacial: O(1)
+   - Requiere arreglos ordenados
+
+3. **Búsqueda Exponencial**
+
+   - Complejidad Temporal: O(log n)
+   - Complejidad Espacial: O(1)
+   - Requiere arreglos ordenados
+   - Particularmente eficiente para arreglos no acotados
+
+4. **Búsqueda por Interpolación**
+   - Complejidad Temporal: O(log log n) caso promedio, O(n) peor caso
+   - Complejidad Espacial: O(1)
+   - Requiere arreglos ordenados
+   - Funciona mejor con valores distribuidos uniformemente
 
 ## Estructura del Proyecto
 
-- `search_algorithms.py`: Implementación básica de los algoritmos
-- `search_interactive.py`: Versión interactiva que permite al usuario ingresar datos
-- `performance_comparison.py`: Comparación de rendimiento entre algoritmos
-- `logger_config.py`: Configuración centralizada del sistema de logging
-
-## Sistema de Logging
-
-El proyecto utiliza el módulo `logging` de Python para mostrar información durante la ejecución:
-
-- Los mensajes informativos se muestran en la consola
-- En el caso de la comparación de rendimiento, también se guardan en un archivo `performance_results.log`
-- Se utilizan diferentes niveles de logging (INFO, WARNING, ERROR)
-
-## Ejecución
-
-Hay tres versiones del programa:
-
-### Versión con datos predefinidos
-
-```bash
-python search_algorithms.py
+```
+search_algorithms/
+├── algorithms/         # Implementaciones de algoritmos
+│   ├── base.py         # Clase base de algoritmo de búsqueda
+│   ├── linear.py       # Implementación de búsqueda lineal
+│   ├── binary.py       # Implementación de búsqueda binaria
+│   ├── exponential.py  # Implementación de búsqueda exponencial
+│   ├── interpolation.py # Implementación de búsqueda por interpolación
+│   └── factory.py      # Factoría para crear instancias de algoritmos
+├── utils/              # Funciones de utilidad
+│   ├── logger.py       # Utilidades de registro
+│   └── performance.py  # Utilidades de medición de rendimiento
+├── visualization/      # Utilidades de visualización
+│   └── performance_plots.py # Utilidades de graficación de rendimiento
+└── tests/              # Pruebas unitarias
 ```
 
-Esta versión ejecuta los algoritmos con un arreglo predefinido y muestra los resultados.
+## Ejemplos de Uso
 
-### Versión interactiva
+### Uso Básico
 
-```bash
-python search_interactive.py
+```python
+from search_algorithms.algorithms import SearchAlgorithmFactory
+from search_algorithms.utils import get_console_logger
+
+# Crear un logger
+logger = get_console_logger("search_demo")
+
+# Obtener una instancia de algoritmo de búsqueda
+binary_search = SearchAlgorithmFactory.get_algorithm("binary", logger)
+
+# Buscar un elemento
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+target = 7
+result = binary_search.search(arr, target)
+
+print(f"Elemento encontrado en el índice: {result}")
+print(f"Número de iteraciones: {binary_search.iterations}")
 ```
 
-Esta versión permite al usuario:
+### Uso de Todos los Algoritmos
 
-- Ingresar su propio arreglo
-- Verificar si el arreglo está ordenado (y ordenarlo si es necesario)
-- Ingresar el elemento a buscar
-- Realizar múltiples búsquedas
+```python
+from search_algorithms.algorithms import SearchAlgorithmFactory
+from search_algorithms.utils import get_console_logger
 
-### Comparación de rendimiento
+# Crear un logger
+logger = get_console_logger("search_demo")
 
-```bash
-python performance_comparison.py
+# Obtener todos los algoritmos de búsqueda
+algorithms = SearchAlgorithmFactory.get_all_algorithms(logger)
+
+# Arreglo en el que buscar
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+target = 7
+
+# Ejecutar cada algoritmo e imprimir resultados
+for name, algorithm in algorithms.items():
+    result = algorithm.search(arr, target)
+    print(f"{algorithm.name}: Encontrado en el índice {result}, iteraciones: {algorithm.iterations}")
 ```
 
-Esta versión:
+### Pruebas de Rendimiento
 
-- Compara el rendimiento de los cuatro algoritmos con diferentes tamaños de arreglos
-- Mide el tiempo de ejecución promedio para cada algoritmo
-- Genera una gráfica comparativa (requiere matplotlib)
-- Guarda la gráfica como 'performance_comparison.png'
-- Registra los resultados en 'performance_results.log'
+```python
+from search_algorithms.algorithms import SearchAlgorithmFactory
+from search_algorithms.utils import run_performance_test
+from search_algorithms.visualization import save_plots
 
-Para instalar matplotlib:
+# Obtener todos los algoritmos sin logging
+algorithms = SearchAlgorithmFactory.get_all_algorithms()
 
-```bash
-pip install matplotlib
+# Ejecutar pruebas de rendimiento
+sizes = [100, 1000, 10000, 100000]
+results = run_performance_test(algorithms, sizes)
+
+# Guardar gráficas
+save_plots(results, output_dir="plots")
 ```
 
-## Descripción de los Algoritmos
+## Herramientas de Línea de Comandos
 
-### Búsqueda Lineal
+El proyecto incluye dos scripts de línea de comandos:
 
-- **Precondiciones**: El arreglo puede estar ordenado o no.
-- **Complejidad**: O(n) en tiempo, O(1) en espacio.
-- **Funcionamiento**: Recorre el arreglo elemento por elemento hasta encontrar el valor buscado.
+1. **interactive_search.py**: Interfaz interactiva para probar algoritmos de búsqueda
 
-### Búsqueda Binaria
+   ```
+   python interactive_search.py
+   ```
 
-- **Precondiciones**: El arreglo debe estar ordenado.
-- **Complejidad**: O(log n) en tiempo, O(1) en espacio.
-- **Funcionamiento**: Divide repetidamente el arreglo a la mitad, descartando la mitad donde no puede estar el elemento.
+2. **performance_test.py**: Ejecutar pruebas de rendimiento y generar visualizaciones
 
-### Búsqueda Exponencial
+   ```
+   python performance_test.py
 
-- **Precondiciones**: El arreglo debe estar ordenado.
-- **Complejidad**: O(log n) en tiempo, O(1) en espacio.
-- **Funcionamiento**: Encuentra un rango donde podría estar el elemento mediante saltos exponenciales, luego aplica búsqueda binaria en ese rango.
+   # Para pruebas extendidas con arreglos más grandes
+   python performance_test.py --extended
+   ```
 
-### Búsqueda por Interpolación
+## Patrones de Diseño Utilizados
 
-- **Precondiciones**: El arreglo debe estar ordenado y los elementos deben estar uniformemente distribuidos.
-- **Complejidad**: O(log log n) en el caso promedio, O(n) en el peor caso.
-- **Funcionamiento**: Estima la posición del elemento basándose en su valor y los valores en los extremos del arreglo.
+1. **Patrón Factoría**: La clase `SearchAlgorithmFactory` maneja la creación de instancias de algoritmos
+2. **Patrón Estrategia**: Cada algoritmo de búsqueda es una implementación concreta de la clase base abstracta `SearchAlgorithm`
+3. **Patrón Método Plantilla**: La clase base define el esqueleto de operaciones, permitiendo a las subclases implementar pasos específicos
 
-## Salida
+## Dependencias
 
-El programa muestra cada iteración realizada por los algoritmos, incluyendo:
+- Python 3.6+
+- matplotlib (para visualización)
 
-- Los índices y valores que se están comparando
-- El resultado final (índice donde se encontró el elemento o -1 si no existe)
+## Instalación
 
-Se ejecutan dos casos de prueba:
+```bash
+# Clonar el repositorio
+git clone https://github.com/yourusername/search-algorithms.git
+cd search-algorithms
 
-1. Búsqueda de un elemento que existe en el arreglo
-2. Búsqueda de un elemento que no existe en el arreglo
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+## Licencia
+
+Licencia MIT
