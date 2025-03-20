@@ -48,9 +48,21 @@ search_algorithms/
 └── tests/              # Pruebas unitarias
 ```
 
-## Ejemplos de Uso
-
 ### Uso Básico
+
+Basta con tener los requisitos especificados más abajo para poder ejecutar el programa. Una vez se tengan los requisitos instalados simplemente deben abrir la carpeta algorithms desde la terminal y escribir lo siguiente:
+      python main.py
+Esto debe de comenzar dos ejecuciones del programa, una es la busqueda del número 7 en un arreglo predefinido, mientras que la otra es la busqueda del número 2 en ese mismo arreglo para ver como se comportan las funciones cuándo el número no se encuentra en el arreglo dado.
+
+Además hay un archivo llamado "otros", el cuál permite hacer la ejecución de cualquier algoritmo de busqueda implementado con cuálquier arreglo, para esto deben de ir a la misma carpeta algorithms donde se encuentra el main y escribir el siguiente comando en la terminal:
+      python otros.py exponential 11 --data 1 3 5 7 9 11
+Este está conformado por 3 cosas que pueden variar 3
+     python otros.py _algoritmo_ _target_ --data _ARREGLO SEPARADO CON ESPACIOS_
+En _algoritmo_ pueden poner "binary", "linear", "exponential" e "interpolation".
+En _target_ pueden poner cualquier número entero
+En _ARREGLO SEPARADO CON ESPACIOS_ pueden poner cualquier "lista" de números siempre y cuándo esté separada con espacios.
+
+
 
 ```python
 from search_algorithms.algorithms import SearchAlgorithmFactory
