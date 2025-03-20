@@ -62,6 +62,8 @@ En _algoritmo_ pueden poner "binary", "linear", "exponential" e "interpolation".
 En _target_ pueden poner cualquier número entero
 En _ARREGLO SEPARADO CON ESPACIOS_ pueden poner cualquier "lista" de números siempre y cuándo esté separada con espacios.
 
+Cabe resaltar que el archivo main.py genera una gráfica de las iteraciones que se hicieron en la ejecución, estas gráficas las pueden encontrar en la carpeta "plots" que debería de generarse una vez ejecuten el main. El archivo otros.py no genera estas gráficas, solo lo muestra en la terminal.
+
 
 
 ```python

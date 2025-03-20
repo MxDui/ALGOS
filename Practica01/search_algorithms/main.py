@@ -1,5 +1,7 @@
 import logging
+import time
 from algorithms.factory import SearchAlgorithmFactory as SearchFactory
+from visualization import plot_time_comparison, plot_iterations_comparison, save_plots
 
 def main():
     # Configuración del logger
@@ -10,35 +12,35 @@ def main():
     algorithms = ["binary", "linear", "exponential", "interpolation"]
 
     # Datos de prueba
-    test_data = [1, 3, 5, 7, 9, 11]
-    target = 7
-
-    print(f"Probando búsqueda del número {target} en la lista {test_data}\n")
+    test_data_sizes = [10, 100, 500, 1000, 5000]
+    results = {"sizes": test_data_sizes}
 
     for algo in algorithms:
         search_algorithm = SearchFactory.get_algorithm(algo, logger)
         if search_algorithm:
-            index = search_algorithm.search(test_data, target)
-            result = f"encontrado en la posición {index}" if index is not None else "no encontrado"
-            print(f"Algoritmo {algo}: {result}")
-            print()
-        else:
-            print(f"Algoritmo '{algo}' no reconocido.")
-    
-    test_data = [1, 3, 5, 7, 9, 11]
-    target = 2
+            results[algo] = {"times": [], "iterations": []}
 
-    print(f"Probando búsqueda del número {target} que no aparece en la lista {test_data}\n")
+            for size in test_data_sizes:
+                data = list(range(size))
+                target = size // 2  # Elegimos un valor que esté en la lista
 
-    for algo in algorithms:
-        search_algorithm = SearchFactory.get_algorithm(algo, logger)
-        if search_algorithm:
-            index = search_algorithm.search(test_data, target)
-            result = f"encontrado en la posición {index}" if index is not None and index > 0 else "no encontrado"
-            print(f"Algoritmo {algo}: {result}")
-            print()
-        else:
-            print(f"Algoritmo '{algo}' no reconocido.")
+                start_time = time.time()
+                index = search_algorithm.search(data, target)
+                elapsed_time = time.time() - start_time
+
+                # Agregamos los resultados al diccionario
+                results[algo]["times"].append(elapsed_time)
+                results[algo]["iterations"].append(index if index is not None else -1)
+
+    # Graficar y guardar los resultados
+    print("Generando gráficos...")
+    fig_time = plot_time_comparison(results)
+    fig_iterations = plot_iterations_comparison(results)
+    fig_time.show()
+    fig_iterations.show()
+
+    saved_files = save_plots(results)
+    print(f"Gráficos guardados en: {saved_files}")
 
 if __name__ == "__main__":
     main()
