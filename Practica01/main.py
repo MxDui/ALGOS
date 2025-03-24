@@ -7,6 +7,10 @@ from search_algorithms.utils.logger import get_console_logger
 """
 Programa principal para probar los algoritmos de búsqueda. 
 
+Requerimientos de entrada para cada algoritmo:
+    - Un arreglo de enteros ordenado
+    - El elemento a buscar (target) como un valor entero
+
 Este script ejecuta cuatro pruebas para cada algoritmo de búsqueda, una donde el número a buscar
 está entre 0 y 10, otra entre 0 y 100, otra entre 0 y 500 y una más entre 0 y 1000.
 Pueden ingresar sus propios arreglos y ver la ejecución paso a paso de cada algoritmo en 
