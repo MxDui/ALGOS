@@ -12,7 +12,7 @@ import time
 import random
 from typing import Dict, List, Callable, TypeVar, Any
 
-from ..algorithms.base import SearchAlgorithm
+from search_algorithms.algorithms.base import SearchAlgorithm
 
 T = TypeVar('T')
 

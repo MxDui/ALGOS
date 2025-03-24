@@ -155,7 +155,6 @@ El proyecto incluye tres scripts de línea de comandos:
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/yourusername/search-algorithms.git
 cd search-algorithms
 
 # Instalar dependencias

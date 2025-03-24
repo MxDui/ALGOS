@@ -1,11 +1,7 @@
 """
-Paquete de Utilidades
+Módulo de utilidades.
 
-Este paquete proporciona funciones de utilidad para los algoritmos de búsqueda.
-
-Módulos:
-    logger: Utilidades de registro
-    performance: Utilidades de medición de rendimiento
+Este módulo contiene utilidades para logging y medición de rendimiento.
 """
 
 from .logger import get_console_logger, get_file_logger, get_null_logger

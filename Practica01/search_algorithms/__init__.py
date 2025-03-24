@@ -1,13 +1,12 @@
 """
-Paquete de Algoritmos de Búsqueda
+Paquete de algoritmos de búsqueda.
 
-Este paquete proporciona implementaciones de varios algoritmos de búsqueda
-y utilidades para medir y visualizar su rendimiento.
+Este paquete contiene implementaciones de varios algoritmos de búsqueda
+y utilidades para probar y comparar su rendimiento.
 
 Paquetes:
     algorithms: Implementaciones de algoritmos de búsqueda
     utils: Funciones de utilidad
-    visualization: Utilidades de visualización
 
 Ejemplo de uso:
     from search_algorithms.algorithms import SearchAlgorithmFactory
@@ -43,12 +42,6 @@ from .utils import (
     run_performance_test
 )
 
-from .visualization import (
-    plot_time_comparison,
-    plot_iterations_comparison,
-    save_plots
-)
-
 __all__ = [
     'SearchAlgorithm',
     'LinearSearch',
@@ -60,8 +53,5 @@ __all__ = [
     'get_file_logger',
     'get_null_logger',
     'measure_time',
-    'run_performance_test',
-    'plot_time_comparison',
-    'plot_iterations_comparison',
-    'save_plots'
+    'run_performance_test'
 ]

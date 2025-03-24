@@ -1,8 +1,8 @@
 import logging
 import time
 import random
-from algorithms.factory import SearchAlgorithmFactory as SearchFactory
-from visualization import plot_time_comparison, plot_iterations_comparison, save_plots
+from search_algorithms.algorithms.factory import SearchAlgorithmFactory as SearchFactory
+from search_algorithms.utils.logger import get_console_logger
 
 """
 Programa principal para probar los algoritmos de búsqueda. 
@@ -14,8 +14,7 @@ interactive_search, el main solo ejecuta pruebas aleatorias.
 """
 def main():
     # Configuración del logger
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
+    logger = get_console_logger(__name__)
 
     # Lista de algoritmos a probar
     algorithms = ["binary", "linear", "exponential", "interpolation"]
@@ -32,7 +31,7 @@ def main():
 
             for size in test_data_sizes:
                 data = list(range(size))
-            # Elegimos la mitad del arreglo para tener una comparacion justa entre todos los algoritmos
+                # Elegimos la mitad del arreglo para tener una comparacion justa entre todos los algoritmos
                 target = size // 2  
 
                 start_time = time.time()
@@ -43,15 +42,15 @@ def main():
                 results[algo]["times"].append(elapsed_time)
                 results[algo]["iterations"].append(index if index is not None else -1)
 
-    # Grafica y guardar los resultados
-    print("Generando gráficas...")
-    fig_time = plot_time_comparison(results)
-    fig_iterations = plot_iterations_comparison(results)
-    fig_time.show()
-    fig_iterations.show()
-
-    saved_files = save_plots(results)
-    print(f"Gráficas guardados en: {saved_files}")
+    # Imprimir resultados
+    print("\nResultados de rendimiento:")
+    print("-" * 50)
+    for algo in algorithms:
+        print(f"\n{algo.capitalize()}:")
+        for i, size in enumerate(test_data_sizes):
+            print(f"  Tamaño {size}:")
+            print(f"    Tiempo: {results[algo]['times'][i]:.6f} segundos")
+            print(f"    Iteraciones: {results[algo]['iterations'][i]}")
 
 if __name__ == "__main__":
     main()

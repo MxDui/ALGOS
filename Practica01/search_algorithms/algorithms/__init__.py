@@ -1,7 +1,7 @@
 """
-Paquete de Algoritmos de Búsqueda
+Módulo de algoritmos de búsqueda.
 
-Este paquete contiene implementaciones de varios algoritmos de búsqueda.
+Este módulo contiene las implementaciones de los diferentes algoritmos de búsqueda.
 
 Algoritmos disponibles:
 - Búsqueda Lineal
