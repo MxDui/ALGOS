@@ -16,8 +16,7 @@ from ..algorithms.base import SearchAlgorithm
 
 T = TypeVar('T')
 
-def measure_time(algorithm: SearchAlgorithm, arr: List[T], target: T, repetitions: int = 100) -> float:
-    """
+"""
     Mide el tiempo de ejecución promedio de un algoritmo de búsqueda.
     
     Args:
@@ -29,6 +28,7 @@ def measure_time(algorithm: SearchAlgorithm, arr: List[T], target: T, repetition
     Returns:
         float: Tiempo de ejecución promedio en segundos
     """
+def measure_time(algorithm: SearchAlgorithm, arr: List[T], target: T, repetitions: int = 100) -> float:
     total_time = 0.0
     
     for _ in range(repetitions):
@@ -39,14 +39,7 @@ def measure_time(algorithm: SearchAlgorithm, arr: List[T], target: T, repetition
     
     return total_time / repetitions
 
-def run_performance_test(
-    algorithms: Dict[str, SearchAlgorithm], 
-    sizes: List[int] = None, 
-    repetitions: int = 100,
-    value_range_factor: int = 10,
-    position: str = 'random'
-) -> Dict[str, Dict[str, Any]]:
-    """
+"""
     Ejecuta pruebas de rendimiento en múltiples algoritmos de búsqueda.
     
     Args:
@@ -60,16 +53,23 @@ def run_performance_test(
     Returns:
         Dict[str, Dict[str, Any]]: Diccionario con los resultados de las pruebas
     """
+def run_performance_test(
+    algorithms: Dict[str, SearchAlgorithm], 
+    sizes: List[int] = None, 
+    repetitions: int = 100,
+    value_range_factor: int = 10,
+    position: str = 'random'
+) -> Dict[str, Dict[str, Any]]:
     if sizes is None:
         sizes = [100, 1000, 10000, 100000]
     
     results = {name: {'times': [], 'iterations': []} for name in algorithms.keys()}
     
     for size in sizes:
-        # Crear un array ordenado
+        # Creamos un array ordenado del tamaño dado
         arr = sorted([random.randint(0, size * value_range_factor) for _ in range(size)])
         
-        # Determinar la posición del elemento objetivo
+        # Determinamos la posición del elemento objetivo
         if position == 'start':
             index = 0
         elif position == 'middle':
@@ -81,23 +81,23 @@ def run_performance_test(
         
         target = arr[index]
         
-        # Medir el rendimiento para cada algoritmo
+        # Medimos el rendimiento para cada algoritmo
         for name, algorithm in algorithms.items():
-            # Medir tiempo sin logging
+            # Medimos el tiempo sin logging
             orig_logger = algorithm.logger
             algorithm.logger = None
             time_taken = measure_time(algorithm, arr, target, repetitions)
             
-            # Medir iteraciones con una sola ejecución
+            # Medimos las iteraciones con una sola ejecución
             algorithm.logger = orig_logger
             algorithm.search(arr, target)
             iterations = algorithm.iterations
             
-            # Almacenar resultados
+            # Almacenamos los resultados
             results[name]['times'].append(time_taken)
             results[name]['iterations'].append(iterations)
     
-    # Añadir información de tamaño a los resultados
+    # Añadimos la información de tamaño a los resultados
     results['sizes'] = sizes
     
     return results 

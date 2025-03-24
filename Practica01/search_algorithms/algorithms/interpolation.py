@@ -13,8 +13,7 @@ from .base import SearchAlgorithm
 
 T = TypeVar('T')
 
-class InterpolationSearch(SearchAlgorithm):
-    """
+"""
     Implementación del Algoritmo de Búsqueda por Interpolación.
     
     La búsqueda por interpolación mejora la búsqueda binaria estimando la posición
@@ -28,27 +27,28 @@ class InterpolationSearch(SearchAlgorithm):
     - El array debe estar ordenado
     - Los elementos deben estar uniformemente distribuidos para un rendimiento óptimo
     """
+class InterpolationSearch(SearchAlgorithm):
     
-    def __init__(self, logger: Optional[logging.Logger] = None):
-        """
+    """
         Inicializa el algoritmo de búsqueda por interpolación.
         
         Args:
             logger (logging.Logger, optional): Instancia de logger
         """
+    def __init__(self, logger: Optional[logging.Logger] = None):
         super().__init__("Interpolation Search", logger)
         
-    def search(self, arr: List[T], target: T) -> int:
-        """
-        Busca un elemento objetivo en el array utilizando búsqueda por interpolación.
+    """
+        Busca un elemento objetivo en el arreglo utilizando búsqueda por interpolación.
         
         Args:
-            arr (List[T]): El array ordenado en el que buscar
+            arr (List[T]): El arreglo ordenado en el que buscar
             target (T): El elemento objetivo a encontrar
             
         Returns:
             int: El índice del elemento objetivo si se encuentra, -1 en caso contrario
         """
+    def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
         self.log(f"\n{self.name}:")
         
@@ -57,7 +57,7 @@ class InterpolationSearch(SearchAlgorithm):
         while low <= high and target >= arr[low] and target <= arr[high]:
             self._iterations += 1
             
-            # Calcular posición usando fórmula de interpolación
+            # Calculamos la posición usando la fórmula de interpolación
             if high == low:
                 pos = low
             else:
@@ -67,16 +67,16 @@ class InterpolationSearch(SearchAlgorithm):
                                     (arr[high] - arr[low])) * 
                                     (target - arr[low])))
                 except (TypeError, ZeroDivisionError):
-                    # Usar el punto medio si la fórmula falla
+                    # Por lo que usamos el punto medio si la fórmula falla
                     pos = low + (high - low) // 2
             
             self.log(f"Iteración {self._iterations}: bajo={low}, pos={pos}, alto={high}, Comparando {arr[pos]} con {target}")
             
-            # Comprobar si se encontró el elemento
+            # Comprobamos si se encontró el elemento
             if arr[pos] == target:
                 return pos
             
-            # Determinar qué subarray buscar
+            # Determinamos en qué sub-arreglo buscar
             if arr[pos] < target:
                 low = pos + 1
             else:

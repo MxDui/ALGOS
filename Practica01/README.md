@@ -39,13 +39,15 @@ search_algorithms/
 │   ├── binary.py       # Implementación de búsqueda binaria
 │   ├── exponential.py  # Implementación de búsqueda exponencial
 │   ├── interpolation.py # Implementación de búsqueda por interpolación
-│   └── factory.py      # Factoría para crear instancias de algoritmos
+│   └── factory.py      # Fabrica que crea instancias de algoritmos
 ├── utils/              # Funciones de utilidad
 │   ├── logger.py       # Utilidades de registro
 │   └── performance.py  # Utilidades de medición de rendimiento
 ├── visualization/      # Utilidades de visualización
 │   └── performance_plots.py # Utilidades de graficación de rendimiento
-└── tests/              # Pruebas unitarias
+├── tests/              # Pruebas unitarias
+├── main.py             # Archivo main que ejecuta una prueba para cada algoritmo
+
 ```
 
 ### Uso Básico
@@ -54,17 +56,11 @@ Basta con tener los requisitos especificados más abajo para poder ejecutar el p
       python main.py
 Esto debe de comenzar dos ejecuciones del programa, una es la busqueda del número 7 en un arreglo predefinido, mientras que la otra es la busqueda del número 2 en ese mismo arreglo para ver como se comportan las funciones cuándo el número no se encuentra en el arreglo dado.
 
-Además hay un archivo llamado "otros", el cuál permite hacer la ejecución de cualquier algoritmo de busqueda implementado con cuálquier arreglo, para esto deben de ir a la misma carpeta algorithms donde se encuentra el main y escribir el siguiente comando en la terminal:
-      python otros.py exponential 11 --data 1 3 5 7 9 11
-Este está conformado por 3 cosas que pueden variar 3
-     python otros.py _algoritmo_ _target_ --data _ARREGLO SEPARADO CON ESPACIOS_
-En _algoritmo_ pueden poner "binary", "linear", "exponential" e "interpolation".
-En _target_ pueden poner cualquier número entero
-En _ARREGLO SEPARADO CON ESPACIOS_ pueden poner cualquier "lista" de números siempre y cuándo esté separada con espacios.
+Además hay un archivo llamado "interactive_search", el cuál permite hacer la ejecución de cualquier algoritmo de busqueda implementado con cuálquier arreglo, para esto deben de ir a la carpeta principal "Practica01" y escribir el siguiente comando en la terminal:
+      python python interactive_search.py
+Una vez ejecutado el programa solo es cuestión de seguir las instrucciones que aparecen ahí, se pueden poner algoritmos ordenados y no ordenados.
 
-Cabe resaltar que el archivo main.py genera una gráfica de las iteraciones que se hicieron en la ejecución, estas gráficas las pueden encontrar en la carpeta "plots" que debería de generarse una vez ejecuten el main. El archivo otros.py no genera estas gráficas, solo lo muestra en la terminal.
-
-
+Cabe resaltar que el archivo main.py genera una gráfica de las iteraciones que se hicieron en la ejecución, estas gráficas las pueden encontrar en la carpeta "plots" que debería de generarse una vez ejecuten el main. El archivo interactive_search.py no genera estas gráficas, solo lo muestra en la terminal, pero hicimos un tercer programa llamado performance_test que nos da las gráficas del rendimiento de cada algoritmo, comparandolos en una misma imagen.
 
 ```python
 from search_algorithms.algorithms import SearchAlgorithmFactory
@@ -127,7 +123,7 @@ save_plots(results, output_dir="plots")
 
 ## Herramientas de Línea de Comandos
 
-El proyecto incluye dos scripts de línea de comandos:
+El proyecto incluye tres scripts de línea de comandos:
 
 1. **interactive_search.py**: Interfaz interactiva para probar algoritmos de búsqueda
 
@@ -135,7 +131,7 @@ El proyecto incluye dos scripts de línea de comandos:
    python interactive_search.py
    ```
 
-2. **performance_test.py**: Ejecutar pruebas de rendimiento y generar visualizaciones
+2. **performance_test.py**: Ejecuta pruebas de rendimiento y genera comparaciones visuales de los algoritmos.
 
    ```
    python performance_test.py
@@ -146,9 +142,9 @@ El proyecto incluye dos scripts de línea de comandos:
 
 ## Patrones de Diseño Utilizados
 
-1. **Patrón Factoría**: La clase `SearchAlgorithmFactory` maneja la creación de instancias de algoritmos
-2. **Patrón Estrategia**: Cada algoritmo de búsqueda es una implementación concreta de la clase base abstracta `SearchAlgorithm`
-3. **Patrón Método Plantilla**: La clase base define el esqueleto de operaciones, permitiendo a las subclases implementar pasos específicos
+1. **Patrón Factory**: La clase `SearchAlgorithmFactory` maneja la creación de instancias de algoritmos
+2. **Patrón Strategy**: Cada algoritmo de búsqueda es una implementación concreta de la clase base abstracta `SearchAlgorithm`
+3. **Patrón Método Template**: La clase base define el "esqueleto" de operaciones, permitiendo a las subclases implementar pasos específicos
 
 ## Dependencias
 

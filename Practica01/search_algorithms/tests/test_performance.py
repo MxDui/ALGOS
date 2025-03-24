@@ -6,96 +6,91 @@ from search_algorithms.utils import measure_time, run_performance_test
 class TestPerformance(unittest.TestCase):
     
     def setUp(self):
-        # Get all search algorithms
+        # Obtenemos todos los algoritmos de búsqueda
         self.algorithms = SearchAlgorithmFactory.get_all_algorithms()
         
-        # Create sample arrays of different sizes
+        # Creamos arreglos de diferentes tamaños
         self.small_array = list(range(100))
         self.medium_array = list(range(1000))
         self.large_array = list(range(10000))
         
-        # Shuffle copies for testing linear search with unsorted arrays
+        # Creamos una copia desordenada del arreglo pequeño para testear busqueda lineal
         self.small_unsorted = self.small_array.copy()
         random.shuffle(self.small_unsorted)
         
+    """Prueba para la función measure_time"""
     def test_measure_time(self):
-        """Test the measure_time function"""
-        # Choose an algorithm
+        # Elegimos el algoritmo de búsqueda binaria
         binary_search = self.algorithms["binary"]
         
-        # Measure time for a simple search
+        # Medimos el tiempo de búsqueda de un elemento en el arreglo pequeño
         time_taken = measure_time(binary_search, self.small_array, 50, repetitions=10)
         
-        # Time should be a positive number
+        # El tiempo tomado debe ser mayor a 0
         self.assertGreater(time_taken, 0)
         
-        # For a small array, search should be very fast (< 0.001 seconds typically)
-        # This is a rough check; exact time will vary by system
+        # Ponemos un valor muy pequeño aproximado a lo que debería tardar
         self.assertLess(time_taken, 0.001)
         
+        """Compara la eficiencia de los algoritmos de búsqueda"""
     def test_algorithm_efficiency_comparison(self):
-        """Compare efficiency of different algorithms"""
-        # We'll use the medium array and search for an element near the end
-        target = self.medium_array[900]  # Element near the end
+        # Elegimos un elemento cercano al final del arreglo mediano
+        target = self.medium_array[900] 
         
-        # Measure time for each algorithm
+        # Medimos el tiempo de búsqueda para cada algoritmo
         times = {}
         for name, algorithm in self.algorithms.items():
-            # Skip interpolation search for string arrays
             times[name] = measure_time(algorithm, self.medium_array, target, repetitions=10)
             
-        # Binary, interpolation, and exponential should be faster than linear for sorted arrays
+        # Busqueda Binaria, por interpolacion, y exponencial debería ser más rapida que la lineal para arrgleos ordenados
         self.assertLess(times["binary"], times["linear"])
         self.assertLess(times["exponential"], times["linear"])
         
-        # These are approximate relationships that should generally hold
-        # for searching in sorted arrays, but may vary by implementation
+        # La busqueda binaria debería ser dos veces más rápida que la lineal aprox
         self.assertLessEqual(times["binary"] * 2, times["linear"])
         
+        """Prueba para la función run_performance_test"""
     def test_run_performance_test(self):
-        """Test the run_performance_test function"""
-        # Run a small performance test
         sizes = [10, 100]
         results = run_performance_test(
             self.algorithms,
             sizes=sizes,
             repetitions=5,
-            position='end'  # Search for elements at the end (worst case for many algorithms)
+            position='end'  # Buscamos los elememtos al final del arreglo, ya que es el peor caso en varios algoritmos
         )
         
-        # Check that results contain expected algorithm names
+        # Verificamos que el resultado tenga los nombres de los algoritmos
         for algo_name in self.algorithms.keys():
             self.assertIn(algo_name, results)
         
-        # Check that sizes were recorded correctly
+        # Verificamps que los tamaños se registraron correctamente
         self.assertIn('sizes', results)
         self.assertEqual(results['sizes'], sizes)
         
-        # Check that each algorithm has results for each array size
+        # Verificamos que cada algoritmo tenga resultados para cada tamaño del arreglo
         for algo_name in self.algorithms.keys():
-            # Check results structure
+            # Verificamos la estructura de los resultados
             self.assertIn('times', results[algo_name])
             self.assertIn('iterations', results[algo_name])
             
-            # Check if 'times' and 'iterations' lists have the correct length
+            # Verificamos si las listas de 'times' e 'iteractions' tienen la longitud correcta
             self.assertEqual(len(results[algo_name]['times']), len(sizes))
             self.assertEqual(len(results[algo_name]['iterations']), len(sizes))
             
-        # Binary search should have fewer iterations than linear search for larger arrays
-        # (index 1 is for the size 100 array)
+        # La búsqueda binaria debería tener menos iteraciones que la búsqueda lineal de arreglos grandes
         self.assertLess(
-            results['binary']['iterations'][1],  # Binary search iterations for size 100
-            results['linear']['iterations'][1]   # Linear search iterations for size 100
+            results['binary']['iterations'][1],  # Iterations de la busqueda binaria para arreglos de tamaño 100
+            results['linear']['iterations'][1]   # Iterations de la busqueda lineal para arreglos de tamaño 100
         )
         
+        """Test para la búsqueda lineal en un arreglo desordenado"""
     def test_linear_search_with_unsorted_array(self):
-        """Test that linear search works with unsorted arrays"""
         linear = self.algorithms["linear"]
         
-        # Pick a value we know is in the array
+        # Elegimos un valor que sabemos que está en el arreglo
         value = self.small_unsorted[20]
         
-        # Search should find the value
+        # La busqueda debería encontrar el valor y devolver su índice
         index = linear.search(self.small_unsorted, value)
         self.assertNotEqual(index, -1)
         self.assertEqual(self.small_unsorted[index], value)

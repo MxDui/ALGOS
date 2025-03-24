@@ -32,14 +32,4 @@ Las pruebas cubren:
 1. **Corrección**: Verificar que cada algoritmo encuentra correctamente elementos en arrays
 2. **Casos Límite**: Probar comportamiento con arrays vacíos, arrays de un solo elemento, etc.
 3. **Rendimiento**: Comparar la eficiencia de diferentes algoritmos
-4. **Patrón Factoría**: Probar la creación y registro de algoritmos
-
-## Añadir Nuevas Pruebas
-
-Al añadir un nuevo algoritmo de búsqueda, por favor crea un archivo de prueba correspondiente
-siguiendo el patrón existente. Asegúrate de que tus pruebas cubran al menos:
-
-- Encontrar elementos al principio, medio y final de los arrays
-- Manejar casos límite (array vacío, elemento no encontrado)
-- Verificar la funcionalidad de conteo de iteraciones
-- Probar cualquier característica específica del algoritmo
+4. **Patrón Factory**: Probar la creación y registro de algoritmos

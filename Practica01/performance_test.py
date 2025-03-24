@@ -3,7 +3,7 @@
 Prueba de Rendimiento de Algoritmos de Búsqueda
 
 Este script ejecuta pruebas de rendimiento en todos los algoritmos de búsqueda y genera
-visualizaciones de los resultados.
+comparaciones visuales de los resultados.
 """
 
 import os
@@ -17,28 +17,28 @@ from search_algorithms.utils import get_console_logger, get_file_logger, run_per
 from search_algorithms.visualization import save_plots
 
 def setup_loggers():
-    """Configurar loggers para la prueba de rendimiento"""
-    # Crear directorio de logs si no existe
+    """Configuramos los loggers para la prueba de rendimiento"""
+    # Creamos el directorio de los logs si no existe
     os.makedirs('logs', exist_ok=True)
     
-    # Crear logger de consola
+    # Creamos un logger de consola
     console_logger = get_console_logger('performance_test')
     
-    # Crear logger de archivo
+    # Y creamos el logger de archivo
     file_logger = get_file_logger('performance_test', 'logs/performance_test.log')
     
     return console_logger, file_logger
 
+"""Ejecuta pruebas de rendimiento en todos los algoritmos de búsqueda"""
 def run_tests(console_logger, file_logger):
-    """Ejecutar pruebas de rendimiento en todos los algoritmos de búsqueda"""
-    console_logger.info("=== Comparación de Rendimiento de Algoritmos de Búsqueda ===")
-    file_logger.info("=== Iniciando comparación de rendimiento ===")
+    console_logger.info("=== Comparación de Rendimiento de los Algoritmos de Búsqueda ===")
+    file_logger.info("=== Iniciando la comparación de rendimiento ===")
     
     try:
-        # Obtener todos los algoritmos (sin logging para evitar contaminar las mediciones de rendimiento)
+        # Primero obtenemos todos los algoritmos (sin logging para evitar "contaminar" las mediciones de rendimiento)
         algorithms = SearchAlgorithmFactory.get_all_algorithms()
         
-        # Definir tamaños de arreglo a probar
+        # Definimos los tamaños de los arreglo a probar
         sizes = [100, 1000, 10000, 100000]
         if '--extended' in sys.argv:
             sizes.append(1000000)
@@ -46,7 +46,7 @@ def run_tests(console_logger, file_logger):
         console_logger.info(f"Probando con tamaños de arreglo: {sizes}")
         file_logger.info(f"Probando con tamaños de arreglo: {sizes}")
         
-        # Definir escenarios de prueba
+        # Definimos los escenarios de prueba, los posibles casos, que son:
         scenarios = {
             'random': 'elemento en posición aleatoria',
             'start': 'elemento al inicio del arreglo',
@@ -54,21 +54,21 @@ def run_tests(console_logger, file_logger):
             'end': 'elemento al final del arreglo'
         }
         
-        # Ejecutar pruebas para cada escenario
+        # Ejecuta las pruebas para cada escenario
         for position, description in scenarios.items():
             console_logger.info(f"\nEjecutando pruebas con {description}...")
             file_logger.info(f"Ejecutando pruebas con {description}")
             
-            # Ejecutar prueba de rendimiento
+            # Ejecuta la prueba de rendimiento
             start_time = time.time()
             results = run_performance_test(algorithms, sizes, repetitions=100, position=position)
             end_time = time.time()
             
-            # Registrar resultados
+            # Registra los resultados más "generales"
             console_logger.info(f"Tiempo total de prueba: {end_time - start_time:.2f} segundos")
             file_logger.info(f"Tiempo total de prueba: {end_time - start_time:.2f} segundos")
             
-            # Registrar resultados detallados
+            # Y registramos los resultados ya más detallados
             for size_idx, size in enumerate(sizes):
                 console_logger.info(f"\nResultados para tamaño de arreglo {size}:")
                 file_logger.info(f"Resultados para tamaño de arreglo {size}:")
@@ -80,7 +80,7 @@ def run_tests(console_logger, file_logger):
                     console_logger.info(f"{algo_name.capitalize()}: {time_result:.6f} segundos, {iter_result} iteraciones")
                     file_logger.info(f"{algo_name.capitalize()}: {time_result:.6f} segundos, {iter_result} iteraciones")
             
-            # Guardar gráficas
+            # Guardamos las gráficas que obtuvimos
             plot_dir = f"plots/{position}"
             plots = save_plots(
                 results, 
@@ -101,13 +101,13 @@ def run_tests(console_logger, file_logger):
         console_logger.error("Asegúrese de tener instalada la biblioteca matplotlib: pip install matplotlib")
         file_logger.error("No se pudo importar matplotlib")
 
+"""Función principal"""
 def main():
-    """Función principal"""
-    # Configurar loggers
+    # coonfiguramos los loggers
     console_logger, file_logger = setup_loggers()
     
     try:
-        # Ejecutar pruebas
+        # Ejecutamos las pruebas
         run_tests(console_logger, file_logger)
     except KeyboardInterrupt:
         console_logger.info("\nPruebas interrumpidas por el usuario.")

@@ -21,8 +21,8 @@ class MockSearchAlgorithm(SearchAlgorithm):
 
 class TestSearchAlgorithmFactory(unittest.TestCase):
     
+    """Prueba para obtener algoritmos por nombre"""
     def test_get_algorithm(self):
-        """Prueba para obtener algoritmos por nombre"""
         # Prueba con nombres en minúsculas
         linear = SearchAlgorithmFactory.get_algorithm("linear")
         self.assertIsInstance(linear, LinearSearch)
@@ -44,53 +44,53 @@ class TestSearchAlgorithmFactory(unittest.TestCase):
         invalid = SearchAlgorithmFactory.get_algorithm("invalid_algorithm")
         self.assertIsNone(invalid)
         
+    """Prueba para obtener todos los algoritmos"""
     def test_get_all_algorithms(self):
-        """Prueba para obtener todos los algoritmos"""
         algorithms = SearchAlgorithmFactory.get_all_algorithms()
         
-        # Verificar que obtenemos el número correcto de algoritmos
+        # Verificamos que obtenemos el número correcto de algoritmos
         self.assertEqual(len(algorithms), 4)
         
-        # Verificar que cada algoritmo es del tipo correcto
+        # Verificamos que cada algoritmo es del tipo correcto
         self.assertIsInstance(algorithms["linear"], LinearSearch)
         self.assertIsInstance(algorithms["binary"], BinarySearch)
         self.assertIsInstance(algorithms["exponential"], ExponentialSearch)
         self.assertIsInstance(algorithms["interpolation"], InterpolationSearch)
         
+    """Prueba para registrar un nuevo algoritmo"""
     def test_register_algorithm(self):
-        """Prueba para registrar un nuevo algoritmo"""
-        # Registrar un algoritmo simulado
+        # Registramos un algoritmo simulado
         SearchAlgorithmFactory.register_algorithm("mock", MockSearchAlgorithm)
         
-        # Verificar que fue añadido
+        # Verificamos que fue añadido
         mock_algo = SearchAlgorithmFactory.get_algorithm("mock")
         self.assertIsInstance(mock_algo, MockSearchAlgorithm)
         
-        # Limpiar después de la prueba
+        # Limpiamos después de la prueba
         if "mock" in SearchAlgorithmFactory._algorithms:
             del SearchAlgorithmFactory._algorithms["mock"]
             
+    """Prueba para crear algoritmos con un logger"""
     def test_with_logger(self):
-        """Prueba para crear algoritmos con un logger"""
         logger = logging.getLogger("test_logger")
         
-        # Obtener algoritmo con logger
+        # Obtenemos el algoritmo con logger
         binary = SearchAlgorithmFactory.get_algorithm("binary", logger)
         
-        # Verificar que se estableció el logger
+        # Verificamos que se estableció el logger
         self.assertEqual(binary.logger, logger)
         
+    """Prueba para obtener los nombres de los algoritmos disponibles"""
     def test_get_available_algorithms(self):
-        """Prueba para obtener nombres de algoritmos disponibles"""
         algorithms = SearchAlgorithmFactory.get_available_algorithms()
         
-        # Verificar que la lista contiene los algoritmos esperados
+        # Verificamos que la lista contenga los algoritmos esperados
         self.assertIn("linear", algorithms)
         self.assertIn("binary", algorithms)
         self.assertIn("exponential", algorithms)
         self.assertIn("interpolation", algorithms)
         
-        # Verificar la longitud
+        # Verificamos la longitud
         self.assertEqual(len(algorithms), 4)
 
 if __name__ == '__main__':

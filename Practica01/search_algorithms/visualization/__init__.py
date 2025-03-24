@@ -1,7 +1,7 @@
 """
 Paquete de Visualización
 
-Este paquete proporciona utilidades para visualizar el rendimiento de algoritmos.
+Este paquete proporciona utilidades para visualizar el rendimiento de los algoritmos.
 
 Módulos:
     performance_plots: Utilidades para graficar métricas de rendimiento

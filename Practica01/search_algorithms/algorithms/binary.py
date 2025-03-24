@@ -13,12 +13,11 @@ from .base import SearchAlgorithm
 
 T = TypeVar('T')
 
-class BinarySearch(SearchAlgorithm):
-    """
+"""
     Implementación del Algoritmo de Búsqueda Binaria.
     
     La búsqueda binaria divide el intervalo de búsqueda a la mitad en cada paso.
-    Compara el valor objetivo con el elemento del medio del array.
+    Compara el valor objetivo con el elemento del medio del arreglo.
     
     Complejidad Temporal: O(log n)
     Complejidad Espacial: O(1)
@@ -26,27 +25,28 @@ class BinarySearch(SearchAlgorithm):
     Precondiciones:
     - El array debe estar ordenado
     """
+class BinarySearch(SearchAlgorithm):
     
-    def __init__(self, logger: Optional[logging.Logger] = None):
-        """
+    """
         Inicializa el algoritmo de búsqueda binaria.
         
         Args:
             logger (logging.Logger, optional): Instancia de logger
         """
+    def __init__(self, logger: Optional[logging.Logger] = None):
         super().__init__("Binary Search", logger)
         
-    def search(self, arr: List[T], target: T) -> int:
-        """
-        Busca un elemento objetivo en el array utilizando búsqueda binaria.
+    """
+        Busca un elemento objetivo en el arreglo utilizando búsqueda binaria.
         
         Args:
-            arr (List[T]): El array ordenado en el que buscar
+            arr (List[T]): El arreglo ordenado en el que buscar
             target (T): El elemento objetivo a encontrar
             
         Returns:
             int: El índice del elemento objetivo si se encuentra, -1 en caso contrario
         """
+    def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
         self.log(f"\n{self.name}:")
         
@@ -67,14 +67,13 @@ class BinarySearch(SearchAlgorithm):
                 
         return -1
     
-    def search_range(self, arr: List[T], target: T, left: int, right: int, start_iteration: int = 0) -> int:
-        """
-        Busca un elemento objetivo en un rango específico del array.
+    """
+        Busca un elemento objetivo en un rango específico del arreglo.
         
         Este método es utilizado por otros algoritmos de búsqueda como la búsqueda exponencial.
         
         Args:
-            arr (List[T]): El array ordenado en el que buscar
+            arr (List[T]): El arreglo ordenado en el que buscar
             target (T): El elemento objetivo a encontrar
             left (int): El límite izquierdo del rango de búsqueda
             right (int): El límite derecho del rango de búsqueda
@@ -83,6 +82,7 @@ class BinarySearch(SearchAlgorithm):
         Returns:
             int: El índice del elemento objetivo si se encuentra, -1 en caso contrario
         """
+    def search_range(self, arr: List[T], target: T, left: int, right: int, start_iteration: int = 0) -> int:
         self.reset_iterations()
         self._iterations = start_iteration
         

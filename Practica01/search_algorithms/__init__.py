@@ -13,13 +13,13 @@ Ejemplo de uso:
     from search_algorithms.algorithms import SearchAlgorithmFactory
     from search_algorithms.utils import get_console_logger
     
-    # Crear un logger
+    # Crea un logger
     logger = get_console_logger("search_demo")
     
-    # Obtener un algoritmo de búsqueda
+    # Obtiene un algoritmo de búsqueda
     binary_search = SearchAlgorithmFactory.get_algorithm("binary", logger)
     
-    # Usar el algoritmo
+    # Finalmente usa el algoritmo
     result = binary_search.search([1, 2, 3, 4, 5], 3)
     print(f"Encontrado en el índice: {result}")
 """

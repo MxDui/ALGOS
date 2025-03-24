@@ -13,13 +13,8 @@ import os
 from typing import Dict, List, Any, Optional
 import matplotlib.pyplot as plt
 
-def plot_time_comparison(
-    results: Dict[str, Dict[str, Any]], 
-    title: str = 'Comparación de Tiempo de Algoritmos de Búsqueda',
-    log_scale: bool = True,
-    figure_size: tuple = (12, 6)
-) -> plt.Figure:
-    """
+
+"""
     Grafica la comparación de tiempo de los algoritmos de búsqueda.
     
     Args:
@@ -31,15 +26,22 @@ def plot_time_comparison(
     Returns:
         plt.Figure: La figura generada
     """
+def plot_time_comparison(
+    results: Dict[str, Dict[str, Any]], 
+    title: str = 'Comparación de Tiempo de Algoritmos de Búsqueda',
+    log_scale: bool = True,
+    figure_size: tuple = (12, 6)
+) -> plt.Figure:
+
     sizes = results.get('sizes', [])
     
     if not sizes:
         raise ValueError("No se encontró información de tamaño en los resultados")
     
-    # Crear figura y ejes
+    # Creamos la figura y sus ejes
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figure_size)
     
-    # Graficar comparación de tiempo (escala lineal)
+    # Grafica la comparación de tiempo (escala lineal)
     for name, data in results.items():
         if name != 'sizes' and 'times' in data:
             ax1.plot(sizes, data['times'], marker='o', label=name)
@@ -50,7 +52,7 @@ def plot_time_comparison(
     ax1.grid(True)
     ax1.legend()
     
-    # Graficar comparación de tiempo (escala logarítmica si se solicita)
+    # Grafica la comparación de tiempo (escala logarítmica si se solicita)
     for name, data in results.items():
         if name != 'sizes' and 'times' in data:
             ax2.plot(sizes, data['times'], marker='o', label=name)
@@ -66,13 +68,7 @@ def plot_time_comparison(
     plt.tight_layout()
     return fig
 
-def plot_iterations_comparison(
-    results: Dict[str, Dict[str, Any]], 
-    title: str = 'Comparación de Iteraciones de Algoritmos de Búsqueda',
-    log_scale: bool = True,
-    figure_size: tuple = (12, 6)
-) -> plt.Figure:
-    """
+"""
     Grafica la comparación de iteraciones de los algoritmos de búsqueda.
     
     Args:
@@ -84,15 +80,21 @@ def plot_iterations_comparison(
     Returns:
         plt.Figure: La figura generada
     """
+def plot_iterations_comparison(
+    results: Dict[str, Dict[str, Any]], 
+    title: str = 'Comparación de Iteraciones de Algoritmos de Búsqueda',
+    log_scale: bool = True,
+    figure_size: tuple = (12, 6)
+) -> plt.Figure:
     sizes = results.get('sizes', [])
     
     if not sizes:
         raise ValueError("No se encontró información de tamaño en los resultados")
     
-    # Crear figura y ejes
+    # Creamos la figura y sus ejes
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figure_size)
     
-    # Graficar comparación de iteraciones (escala lineal)
+    # Graficamos la comparación de iteraciones (escala lineal)
     for name, data in results.items():
         if name != 'sizes' and 'iterations' in data:
             ax1.plot(sizes, data['iterations'], marker='o', label=name)
@@ -103,7 +105,7 @@ def plot_iterations_comparison(
     ax1.grid(True)
     ax1.legend()
     
-    # Graficar comparación de iteraciones (escala logarítmica si se solicita)
+    # Graficamos la comparación de iteraciones (escala logarítmica si se solicita)
     for name, data in results.items():
         if name != 'sizes' and 'iterations' in data:
             ax2.plot(sizes, data['iterations'], marker='o', label=name)
@@ -119,14 +121,7 @@ def plot_iterations_comparison(
     plt.tight_layout()
     return fig
 
-def save_plots(
-    results: Dict[str, Dict[str, Any]], 
-    output_dir: str = 'plots',
-    time_plot_filename: str = 'time_comparison.png',
-    iterations_plot_filename: str = 'iterations_comparison.png',
-    dpi: int = 300
-) -> List[str]:
-    """
+"""
     Guarda las gráficas de rendimiento en archivos.
     
     Args:
@@ -139,19 +134,26 @@ def save_plots(
     Returns:
         List[str]: Lista de rutas a archivos guardados de las gráficas
     """
-    # Crear directorio de salida si no existe
+def save_plots(
+    results: Dict[str, Dict[str, Any]], 
+    output_dir: str = 'plots',
+    time_plot_filename: str = 'time_comparison.png',
+    iterations_plot_filename: str = 'iterations_comparison.png',
+    dpi: int = 300
+) -> List[str]:
+    # Creamos el directorio de salida si no existe
     os.makedirs(output_dir, exist_ok=True)
     
     saved_files = []
     
-    # Guardar gráfica de comparación de tiempo
+    # Guardamos la gráfica de comparación de tiempo
     time_fig = plot_time_comparison(results)
     time_path = os.path.join(output_dir, time_plot_filename)
     time_fig.savefig(time_path, dpi=dpi)
     plt.close(time_fig)
     saved_files.append(time_path)
     
-    # Guardar gráfica de comparación de iteraciones
+    # Guardamos la gráfica de comparación de iteraciones
     iter_fig = plot_iterations_comparison(results)
     iter_path = os.path.join(output_dir, iterations_plot_filename)
     iter_fig.savefig(iter_path, dpi=dpi)

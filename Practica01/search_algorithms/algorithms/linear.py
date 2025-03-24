@@ -13,40 +13,40 @@ from .base import SearchAlgorithm
 
 T = TypeVar('T')
 
-class LinearSearch(SearchAlgorithm):
-    """
+"""
     Implementación del Algoritmo de Búsqueda Lineal.
     
-    La búsqueda lineal comprueba secuencialmente cada elemento del array
-    hasta encontrar el elemento objetivo o llegar al final del array.
+    La búsqueda lineal comprueba secuencialmente cada elemento del aarreglo
+    hasta encontrar el elemento que estamos buscando o hasta llegar al final del arreglo.
     
     Complejidad Temporal: O(n)
     Complejidad Espacial: O(1)
     
     Precondiciones:
-    - El array puede estar ordenado o desordenado
+    - El arreglo puede estar ordenado o desordenado
     """
+class LinearSearch(SearchAlgorithm):
     
-    def __init__(self, logger: Optional[logging.Logger] = None):
-        """
+    """
         Inicializa el algoritmo de búsqueda lineal.
         
         Args:
             logger (logging.Logger, optional): Instancia de logger
         """
+    def __init__(self, logger: Optional[logging.Logger] = None):
         super().__init__("Linear Search", logger)
         
-    def search(self, arr: List[T], target: T) -> int:
-        """
-        Busca un elemento objetivo en el array utilizando búsqueda lineal.
+    """
+        Busca un elemento objetivo en el arrgelo utilizando búsqueda lineal.
         
         Args:
-            arr (List[T]): El array en el que buscar
+            arr (List[T]): El arreglo en el que buscar
             target (T): El elemento objetivo a encontrar
             
         Returns:
             int: El índice del elemento objetivo si se encuentra, -1 en caso contrario
         """
+    def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
         self.log(f"\n{self.name}:")
         
