@@ -48,7 +48,7 @@ class LinearSearch(SearchAlgorithm):
         """
     def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
-        self.log(f"\n{self.name}:")
+        self.log(f"\nBúsqueda Lineal:")
         
         for i in range(len(arr)):
             self._iterations += 1

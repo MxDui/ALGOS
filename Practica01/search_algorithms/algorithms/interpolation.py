@@ -50,7 +50,7 @@ class InterpolationSearch(SearchAlgorithm):
         """
     def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
-        self.log(f"\n{self.name}:")
+        self.log(f"\nBúsqueda por Interpolación:")
         
         low, high = 0, len(arr) - 1
         

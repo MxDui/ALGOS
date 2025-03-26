@@ -22,10 +22,10 @@ class ColoredFormatter(logging.Formatter):
     
     # Diccionario de emojis para cada algoritmo
     ALGORITHM_EMOJIS = {
-        'Binary Search': '🔍',
-        'Linear Search': '➡️',
-        'Exponential Search': '📈',
-        'Interpolation Search': '📊'
+        'Búsqueda Binaria': '🔍',
+        'Búsqueda Lineal': '➡️',
+        'Búsqueda Exponencial': '📈',
+        'Búsqueda por Interpolación': '📊'
     }
 
     # Diccionario de emojis para diferentes tipos de mensajes

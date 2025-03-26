@@ -51,7 +51,7 @@ class ExponentialSearch(SearchAlgorithm):
         """
     def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
-        self.log(f"\n{self.name}:")
+        self.log(f"\nBúsqueda Exponencial:")
         
         n = len(arr)
         

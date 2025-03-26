@@ -48,7 +48,7 @@ class BinarySearch(SearchAlgorithm):
         """
     def search(self, arr: List[T], target: T) -> int:
         self.reset_iterations()
-        self.log(f"\n{self.name}:")
+        self.log(f"\nBúsqueda Binaria:")
         
         left, right = 0, len(arr) - 1
         
