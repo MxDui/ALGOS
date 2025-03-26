@@ -71,7 +71,7 @@ class TestInterpolationSearch(unittest.TestCase):
     def test_duplicate_elements(self):
         arr = [1, 2, 2, 2, 3, 4, 5]
         result = self.search.search(arr, 2)
-        self.assertIn(result, [1, 2, 3])  # Could be any of these positions
+        self.assertIn(result, [1, 2, 3])  # Podría ser cualquiera de estas posiciones
 
 if __name__ == '__main__':
     unittest.main() 

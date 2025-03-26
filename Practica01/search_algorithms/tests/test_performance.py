@@ -42,11 +42,11 @@ class TestPerformance(unittest.TestCase):
         for name, algorithm in self.algorithms.items():
             times[name] = measure_time(algorithm, self.medium_array, target, repetitions=10)
             
-        # Busqueda Binaria, por interpolacion, y exponencial debería ser más rapida que la lineal para arrgleos ordenados
+        # La búsqueda Binaria, por interpolación, y exponencial deberían ser más rápidas que la lineal para arreglos ordenados
         self.assertLess(times["binary"], times["linear"])
         self.assertLess(times["exponential"], times["linear"])
         
-        # La busqueda binaria debería ser dos veces más rápida que la lineal aprox
+        # La búsqueda binaria debería ser aproximadamente dos veces más rápida que la lineal
         self.assertLessEqual(times["binary"] * 2, times["linear"])
         
         """Prueba para la función run_performance_test"""

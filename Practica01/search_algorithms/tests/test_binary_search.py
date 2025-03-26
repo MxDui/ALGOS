@@ -48,7 +48,7 @@ class TestBinarySearch(unittest.TestCase):
     def test_array_with_duplicates(self):
         arr = [1, 2, 2, 2, 3, 4, 5]
         result = self.search.search(arr, 2)
-        self.assertIn(result, [1, 2, 3])  # Could be any of these positions
+        self.assertIn(result, [1, 2, 3])  # Podría ser cualquiera de estas posiciones
         
     """Test para el contador de iteraciones de búsqueda binaria"""
     def test_iteration_count(self):
