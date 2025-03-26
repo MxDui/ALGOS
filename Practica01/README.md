@@ -46,7 +46,7 @@ search_algorithms/
 ├── visualization/      # Utilidades de visualización
 │   └── performance_plots.py # Utilidades de graficación de rendimiento
 ├── tests/              # Pruebas unitarias
-├── main.py             # Archivo main que ejecuta una prueba para cada algoritmo
+└── main.py             # Archivo main que ejecuta una prueba para cada algoritmo
 
 ```
 
@@ -54,13 +54,7 @@ search_algorithms/
 
 Basta con tener los requisitos especificados más abajo para poder ejecutar el programa. Una vez se tengan los requisitos instalados simplemente deben abrir la carpeta algorithms desde la terminal y escribir lo siguiente:
       python main.py
-Esto debe de comenzar dos ejecuciones del programa, una es la busqueda del número 7 en un arreglo predefinido, mientras que la otra es la busqueda del número 2 en ese mismo arreglo para ver como se comportan las funciones cuándo el número no se encuentra en el arreglo dado.
-
-Además hay un archivo llamado "interactive_search", el cuál permite hacer la ejecución de cualquier algoritmo de busqueda implementado con cuálquier arreglo, para esto deben de ir a la carpeta principal "Practica01" y escribir el siguiente comando en la terminal:
-      python python interactive_search.py
-Una vez ejecutado el programa solo es cuestión de seguir las instrucciones que aparecen ahí, se pueden poner algoritmos ordenados y no ordenados.
-
-Cabe resaltar que el archivo main.py genera una gráfica de las iteraciones que se hicieron en la ejecución, estas gráficas las pueden encontrar en la carpeta "plots" que debería de generarse una vez ejecuten el main. El archivo interactive_search.py no genera estas gráficas, solo lo muestra en la terminal, pero hicimos un tercer programa llamado performance_test que nos da las gráficas del rendimiento de cada algoritmo, comparandolos en una misma imagen.
+Esto debe de comenzar la busqueda de la mitad de un arreglo ordenado de 10,100,250 y 500 elementos, además de que hace otra busqueda en ese mismo arreglo pero ahora con un número que no aparece en el arreglo para ver como se comportan las funciones cuándo el número no se encuentra en el arreglo dado. Hicimos además pruebas unitarias, en la carpeta test hay un readme con más información.
 
 ```python
 from search_algorithms.algorithms import SearchAlgorithmFactory
@@ -122,23 +116,10 @@ save_plots(results, output_dir="plots")
 ```
 
 ## Herramientas de Línea de Comandos
+Para correr el programa deben de estar en la carpeta práctica01 y poner lo siguiente en la terminal
 
-El proyecto incluye tres scripts de línea de comandos:
+python main.py
 
-1. **interactive_search.py**: Interfaz interactiva para probar algoritmos de búsqueda
-
-   ```
-   python interactive_search.py
-   ```
-
-2. **performance_test.py**: Ejecuta pruebas de rendimiento y genera comparaciones visuales de los algoritmos.
-
-   ```
-   python performance_test.py
-
-   # Para pruebas extendidas con arreglos más grandes
-   python performance_test.py --extended
-   ```
 
 ## Patrones de Diseño Utilizados
 
@@ -154,12 +135,12 @@ El proyecto incluye tres scripts de línea de comandos:
 ## Instalación
 
 ```bash
-# Clonar el repositorio
-cd search-algorithms
+Deben estar en la carpeta practica01
 
-# Instalar dependencias
+# Instalar dependencias en caso de faltar
 pip install -r requirements.txt
 ```
+
 
 ## Licencia
 
