@@ -1,57 +1,50 @@
-"""
-MIT License
-
-Copyright (c) 2023 David Rivera Morales
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-"""
-
 from typing import List, Generator, Union
 import copy
-from sortkit.core.base import traceable
 
 
-@traceable
-def heap_sort(data: List[int], trace: bool = False) -> List[int]:
+def heap_sort(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, None]]:
     """
-    Implementation of Heap Sort algorithm.
+    Implementación del algoritmo de Ordenación por Montículo (Heap Sort).
     
-    Heap sort builds a max heap from the array and repeatedly extracts
-    the maximum element, placing it at the end of the array.
+    Heap sort construye un montículo máximo (max heap) a partir del array y extrae repetidamente
+    el elemento máximo, colocándolo al final del array.
     
     Args:
-        data: The list to be sorted
-        trace: If True, the original function will be wrapped to yield 
-               intermediate states. This parameter is used by the traceable decorator.
-    
+        data: La lista a ordenar
+        trace: Si es True, genera estados intermedios durante la ordenación
+        
     Returns:
-        The sorted list
+        Si trace es False: La lista ordenada
+        Si trace es True: Un generador que produce pasos del proceso de ordenación
     """
-    # Make a working copy to avoid modifying the input
+    # Hacer una copia de trabajo para evitar modificar la entrada
     arr = copy.deepcopy(data)
     
-    # This is the generator version called by the traceable decorator
-    if trace and hasattr(heap_sort, 'is_traceable'):
-        return _heap_sort_trace(arr)
+    if trace:
+        return _heap_sort_with_trace(arr)
+    else:
+        return _heap_sort_without_trace(arr)
+
+
+def _heap_sort_without_trace(arr: List[int]) -> List[int]:
+    """
+    Implementación estándar de heap sort (sin seguimiento).
     
-    # The normal non-tracing version
+    Args:
+        arr: La lista a ordenar
+        
+    Returns:
+        La lista ordenada
+    """
     n = len(arr)
     
-    # Build a max heap
+    # Construir un montículo máximo
     for i in range(n // 2 - 1, -1, -1):
         _heapify(arr, n, i)
     
-    # Extract elements one by one
+    # Extraer elementos uno por uno
     for i in range(n - 1, 0, -1):
-        arr[0], arr[i] = arr[i], arr[0]  # Swap
+        arr[0], arr[i] = arr[i], arr[0]  # Intercambiar
         _heapify(arr, i, 0)
     
     return arr
@@ -59,91 +52,69 @@ def heap_sort(data: List[int], trace: bool = False) -> List[int]:
 
 def _heapify(arr: List[int], n: int, i: int) -> None:
     """
-    Heapify a subtree rooted at index i.
+    Heapifica un subárbol con raíz en el índice i.
     
     Args:
-        arr: The array to heapify
-        n: The size of the heap
-        i: The index of the root of the subtree to heapify
+        arr: El array a heapificar
+        n: El tamaño del montículo
+        i: El índice de la raíz del subárbol a heapificar
     """
-    largest = i  # Initialize largest as root
-    left = 2 * i + 1  # Left child
-    right = 2 * i + 2  # Right child
+    largest = i  # Inicializar el más grande como raíz
+    left = 2 * i + 1  # Hijo izquierdo
+    right = 2 * i + 2  # Hijo derecho
     
-    # Check if left child exists and is greater than root
+    # Comprobar si el hijo izquierdo existe y es mayor que la raíz
     if left < n and arr[left] > arr[largest]:
         largest = left
     
-    # Check if right child exists and is greater than the largest so far
+    # Comprobar si el hijo derecho existe y es mayor que el más grande hasta ahora
     if right < n and arr[right] > arr[largest]:
         largest = right
     
-    # If the largest is not the root
+    # Si el más grande no es la raíz
     if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]  # Swap
+        arr[i], arr[largest] = arr[largest], arr[i]  # Intercambiar
         
-        # Recursively heapify the affected subtree
+        # Heapificar recursivamente el subárbol afectado
         _heapify(arr, n, largest)
 
 
-def _heap_sort_trace(arr: List[int]) -> Generator[List[int], None, List[int]]:
+def _heap_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
     """
-    Generator version of heap sort that yields after each significant step.
+    Heap sort con seguimiento que genera después de cada paso significativo.
     
     Args:
-        arr: The list to be sorted
+        arr: La lista a ordenar
         
     Yields:
-        The list at each step of the sorting process
-    
-    Returns:
-        The final sorted list
+        La lista en cada paso del proceso de ordenación
     """
     n = len(arr)
     
-    # Build a max heap and yield after construction
+    # Generar el estado inicial
+    yield copy.deepcopy(arr)
+    
+    # Construir un montículo máximo con pasos intermedios
     for i in range(n // 2 - 1, -1, -1):
-        _heapify_trace(arr, n, i)
+        before_heapify = copy.deepcopy(arr)
+        _heapify(arr, n, i)
+        # Solo generar si el montículo cambió
+        if arr != before_heapify:
+            yield copy.deepcopy(arr)
     
-    yield copy.deepcopy(arr)  # Yield after max heap is built
+    # Generar después de que se construyó el montículo máximo
+    yield copy.deepcopy(arr)
     
-    # Extract elements one by one
+    # Extraer elementos uno por uno
     for i in range(n - 1, 0, -1):
-        arr[0], arr[i] = arr[i], arr[0]  # Swap
-        _heapify_trace(arr, i, 0)
-        yield copy.deepcopy(arr)  # Yield after each extraction
-    
-    return arr
-
-
-def _heapify_trace(arr: List[int], n: int, i: int) -> None:
-    """
-    Trace-enabled version of the heapify function.
-    Identical to _heapify but used for tracing.
-    
-    Args:
-        arr: The array to heapify
-        n: The size of the heap
-        i: The index of the root of the subtree to heapify
-    """
-    largest = i  # Initialize largest as root
-    left = 2 * i + 1  # Left child
-    right = 2 * i + 2  # Right child
-    
-    # Check if left child exists and is greater than root
-    if left < n and arr[left] > arr[largest]:
-        largest = left
-    
-    # Check if right child exists and is greater than the largest so far
-    if right < n and arr[right] > arr[largest]:
-        largest = right
-    
-    # If the largest is not the root
-    if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]  # Swap
+        # Intercambiar raíz con el último elemento
+        arr[0], arr[i] = arr[i], arr[0]
+        # Generar después del intercambio
+        yield copy.deepcopy(arr)
         
-        # Recursively heapify the affected subtree
-        _heapify_trace(arr, n, largest)
-
-# Add an attribute to indicate this function yields a generator when trace=True
-heap_sort.is_generator = True
+        # Heapificar el montículo reducido
+        before_heapify = copy.deepcopy(arr)
+        _heapify(arr, i, 0)
+        # Solo generar si el montículo cambió
+        if arr[:i] != before_heapify[:i]:
+            yield copy.deepcopy(arr)

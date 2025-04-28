@@ -1,95 +1,20 @@
-"""
-MIT License
-
-Copyright (c) 2023 David Rivera Morales
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-"""
-
-import argparse
 import sys
 import random
 import time
 from typing import List, Optional, Any, Dict
-
 from sortkit.registry import ALGORITHMS, list_algorithms, get_algorithm
-from sortkit.bench import run_benchmarks, print_benchmark_results
-
-
-def parse_args() -> argparse.Namespace:
-    """
-    Parse command line arguments.
-    
-    Returns:
-        The parsed arguments
-    """
-    parser = argparse.ArgumentParser(
-        description="SortKit: Modular Sorting Algorithms Toolkit"
-    )
-    
-    # Create a mutual exclusion group for commands
-    cmd_group = parser.add_mutually_exclusive_group(required=True)
-    cmd_group.add_argument(
-        "--algo", "-a", 
-        type=str, 
-        choices=list_algorithms(),
-        help=f"Sorting algorithm to use (one of: {', '.join(list_algorithms())})"
-    )
-    cmd_group.add_argument(
-        "demo", 
-        nargs="?", 
-        help="Run a demonstration of all sorting algorithms"
-    )
-    cmd_group.add_argument(
-        "--benchmark", "-b", 
-        action="store_true", 
-        help="Run benchmarks for all sorting algorithms"
-    )
-    
-    # Other arguments
-    parser.add_argument(
-        "--size", "-s", 
-        type=int, 
-        default=10,
-        help="Size of the random array to sort (default: 10)"
-    )
-    parser.add_argument(
-        "--trace", "-t", 
-        action="store_true",
-        help="Show step-by-step tracing of the algorithm"
-    )
-    parser.add_argument(
-        "--linked-list", "-l", 
-        action="store_true",
-        help="Use doubly-linked list implementation instead of arrays"
-    )
-    parser.add_argument(
-        "--seed", 
-        type=int,
-        help="Random seed for reproducibility"
-    )
-    
-    return parser.parse_args()
-
+from sortkit.structs.dllist import DoublyLinkedList
 
 def generate_random_data(size: int, seed: Optional[int] = None) -> List[int]:
     """
-    Generate a list of random integers.
+    Genera una lista de enteros aleatorios.
     
     Args:
-        size: Number of elements to generate
-        seed: Random seed for reproducibility
+        size: Número de elementos a generar
+        seed: Semilla aleatoria para reproducibilidad
         
     Returns:
-        A list of random integers
+        Una lista de enteros aleatorios
     """
     if seed is not None:
         random.seed(seed)
@@ -98,113 +23,166 @@ def generate_random_data(size: int, seed: Optional[int] = None) -> List[int]:
 
 def print_steps(steps: List[List[int]]) -> None:
     """
-    Print sorting steps in a human-readable format.
+    Imprime los pasos de ordenación en un formato legible.
     
     Args:
-        steps: List of lists, each representing a step in the sorting process
+        steps: Lista de listas, cada una representando un paso en el proceso de ordenación
     """
-    for i, step in enumerate(steps):
-        if i == 0:
-            print(f"Initial: {step}")
-        elif i == len(steps) - 1:
-            print(f"Final:   {step}")
+    # No mostrar todos los pasos para listas grandes para evitar salida abrumadora
+    total_steps = len(steps)
+    
+    # Mostrar un número razonable de pasos
+    if total_steps <= 2:
+        print("Solo se capturaron estados inicial y final:")
+        print(f"Inicial: {steps[0]}")
+        print(f"Final:   {steps[-1]}")
+    else:
+        print(f"Total de pasos: {total_steps}")
+        print(f"Inicial: {steps[0]}")
+        
+        # Para listas pequeñas, mostrar todos los pasos
+        if total_steps <= 10:
+            for i in range(1, total_steps - 1):
+                print(f"Paso {i}: {steps[i]}")
         else:
-            print(f"Step {i}: {step}")
+            # Para recuentos de pasos más grandes, mostrar ~8 pasos distribuidos uniformemente
+            num_to_show = min(8, total_steps - 2)
+            step_interval = (total_steps - 2) // num_to_show
+            
+            for i in range(1, total_steps - 1, step_interval):
+                print(f"Paso {i}: {steps[i]}")
+                
+            # Asegurarse de mostrar el último paso intermedio si aún no lo hemos hecho
+            if 1 + step_interval * (num_to_show - 1) < total_steps - 1:
+                print(f"Paso {total_steps - 2}: {steps[total_steps - 2]}")
+        
+        print(f"Final:   {steps[-1]}")
 
 
-def run_algorithm(algorithm_name: str, size: int, trace: bool, seed: Optional[int]) -> None:
+def run_algorithm(algorithm_name: str, size: int, trace: bool, seed: Optional[int], use_linked_list: bool = False) -> None:
     """
-    Run a sorting algorithm and display the results.
+    Ejecuta un algoritmo de ordenación y muestra los resultados.
     
     Args:
-        algorithm_name: Name of the algorithm to run
-        size: Size of the input array
-        trace: Whether to show step-by-step tracing
-        seed: Random seed for reproducibility
+        algorithm_name: Nombre del algoritmo a ejecutar
+        size: Tamaño del array de entrada
+        trace: Si se debe mostrar el seguimiento paso a paso
+        seed: Semilla aleatoria para reproducibilidad
+        use_linked_list: Si se debe usar la implementación de lista enlazada
     """
-    algorithm = get_algorithm(algorithm_name)
+    algorithm = get_algorithm(algorithm_name, use_linked_list=use_linked_list)
     data = generate_random_data(size, seed)
     
-    print(f"\nRunning {algorithm_name.capitalize()} Sort on list of size {size}")
-    print(f"Input: {data}")
+    # Convertir a lista enlazada si es necesario
+    if use_linked_list:
+        input_data = DoublyLinkedList(data)
+        print(f"\nEjecutando ordenación {algorithm_name.capitalize()} en lista enlazada de tamaño {size}")
+    else:
+        input_data = data
+        print(f"\nEjecutando ordenación {algorithm_name.capitalize()} en lista de tamaño {size}")
+    
+    print(f"Entrada: {data}")
     
     if trace:
         start_time = time.perf_counter()
-        steps = list(algorithm(data, trace=True))
+        steps = list(algorithm(input_data, trace=True))
         end_time = time.perf_counter()
         
-        print(f"\nSorting steps:")
-        print_steps(steps)
+        print(f"\nPasos de ordenación:")
+        # Convertir pasos de lista enlazada a listas regulares para visualización
+        if use_linked_list:
+            list_steps = [step.to_list() for step in steps]
+            print_steps(list_steps)
+        else:
+            print_steps(steps)
     else:
         start_time = time.perf_counter()
-        result = algorithm(data)
+        result = algorithm(input_data)
         end_time = time.perf_counter()
         
-        print(f"Output: {result}")
+        # Convertir resultado a lista regular para visualización
+        if use_linked_list:
+            result_list = result.to_list()
+            print(f"Salida: {result_list}")
+        else:
+            print(f"Salida: {result}")
     
     elapsed = end_time - start_time
-    print(f"\nTime elapsed: {elapsed:.6f} seconds")
+    print(f"\nTiempo transcurrido: {elapsed:.6f} segundos")
 
 
-def run_demo(size: int, trace: bool, seed: Optional[int]) -> None:
+def run_demo(size: int, trace: bool, seed: Optional[int], use_linked_list: bool = False) -> None:
     """
-    Run a demonstration of all sorting algorithms.
+    Ejecuta una demostración de todos los algoritmos de ordenación.
     
     Args:
-        size: Size of the input array
-        trace: Whether to show step-by-step tracing
-        seed: Random seed for reproducibility
+        size: Tamaño del array de entrada
+        trace: Si se debe mostrar el seguimiento paso a paso
+        seed: Semilla aleatoria para reproducibilidad
+        use_linked_list: Si se debe usar la implementación de lista enlazada
     """
-    print("\n===== SORTKIT DEMONSTRATION =====\n")
+    implementation = "Lista Enlazada" if use_linked_list else "Array"
+    print(f"\n===== DEMOSTRACIÓN DE SORTKIT (Implementación de {implementation}) =====\n")
     
-    # Ensure the same data is used for all algorithms in the demo
+    # Asegurar que se usen los mismos datos para todos los algoritmos en la demostración
     if seed is not None:
         random.seed(seed)
     data = generate_random_data(size)
     
+    # Convertir a lista enlazada si es necesario
+    if use_linked_list:
+        input_data = DoublyLinkedList(data)
+    else:
+        input_data = data.copy()
+    
     for algorithm_name in list_algorithms():
-        algorithm = get_algorithm(algorithm_name)
+        algorithm = get_algorithm(algorithm_name, use_linked_list=use_linked_list)
         
-        print(f"\n--- {algorithm_name.capitalize()} Sort ---")
-        print(f"Input: {data}")
+        print(f"\n--- Ordenación {algorithm_name.capitalize()} ---")
+        print(f"Entrada: {data}")
         
         if trace:
             start_time = time.perf_counter()
-            steps = list(algorithm(data.copy(), trace=True))
+            if use_linked_list:
+                # Crear una nueva lista enlazada para cada algoritmo
+                algo_input = DoublyLinkedList(data)
+                steps = list(algorithm(algo_input, trace=True))
+                # Convertir pasos de lista enlazada a listas regulares para visualización
+                list_steps = [step.to_list() for step in steps]
+            else:
+                steps = list(algorithm(data.copy(), trace=True))
+                list_steps = steps
             end_time = time.perf_counter()
             
-            print("\nSorting steps:")
-            print_steps(steps)
+            print("\nPasos de ordenación:")
+            print_steps(list_steps)
         else:
             start_time = time.perf_counter()
-            result = algorithm(data.copy())
+            if use_linked_list:
+                # Crear una nueva lista enlazada para cada algoritmo
+                algo_input = DoublyLinkedList(data)
+                result = algorithm(algo_input)
+                result_list = result.to_list()
+            else:
+                result = algorithm(data.copy())
+                result_list = result
             end_time = time.perf_counter()
             
-            print(f"Output: {result}")
+            print(f"Salida: {result_list}")
         
         elapsed = end_time - start_time
-        print(f"Time elapsed: {elapsed:.6f} seconds\n")
+        print(f"Tiempo transcurrido: {elapsed:.6f} segundos\n")
         print("-" * 50)
 
 
-def main() -> None:
-    """Main entry point for the CLI."""
-    args = parse_args()
-    
-    # Handle the linked list flag
-    if args.linked_list:
-        # This will be handled once the linked list implementation is completed
-        print("Note: Linked list implementation will be used when available.")
-    
-    # Run the appropriate command
-    if args.demo is not None:
-        run_demo(args.size, args.trace, args.seed)
-    elif args.benchmark:
-        results = run_benchmarks(sizes=[100, 1000, args.size])
-        print_benchmark_results(results)
-    else:  # --algo was specified
-        run_algorithm(args.algo, args.size, args.trace, args.seed)
-
-
 if __name__ == "__main__":
-    main()
+    # Usar un tamaño pequeño para mostrar mejor los pasos del algoritmo
+    size = 8
+    trace = True
+    seed = 42
+    
+    # Ejecutar con implementación de array
+    run_demo(size=size, trace=trace, seed=seed, use_linked_list=False)
+    
+    # Ejecutar con implementación de lista enlazada
+    run_demo(size=size, trace=trace, seed=seed, use_linked_list=True)

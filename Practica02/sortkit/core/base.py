@@ -1,19 +1,3 @@
-"""
-MIT License
-
-Copyright (c) 2023 David Rivera Morales
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-"""
-
 from typing import Protocol, TypeVar, List, Generator, Callable, Any, Union, cast, overload
 import functools
 import copy
@@ -22,73 +6,69 @@ T = TypeVar('T')
 
 
 class SortAlgorithm(Protocol):
-    """Protocol defining the interface for all sorting algorithms."""
+    """Protocolo que define la interfaz para todos los algoritmos de ordenación."""
     
     def __call__(
         self, data: List[int], trace: bool = False
     ) -> Union[List[int], Generator[List[int], None, List[int]]]:
         """
-        Sort the input list.
+        Ordena la lista de entrada.
         
         Args:
-            data: The list to be sorted
-            trace: If True, yield intermediate states during sorting
-                  If False, just return the final sorted list
+            data: La lista a ordenar
+            trace: Si es True, genera estados intermedios durante la ordenación
+                  Si es False, solo devuelve la lista ordenada final
                   
         Returns:
-            If trace is False, return the sorted list
-            If trace is True, yield a generator of intermediate states,
-            with the final state being the sorted list
+            Si trace es False, devuelve la lista ordenada
+            Si trace es True, genera un generador de estados intermedios,
+            siendo el estado final la lista ordenada
         """
         ...
 
 
 def traceable(func: Callable) -> Callable:
     """
-    Decorator that adds tracing capability to sorting functions.
+    Decorador que añade capacidad de seguimiento a funciones de ordenación.
     
-    When trace=True, the decorated function will yield intermediate states
-    as the sorting algorithm progresses.
+    Cuando trace=True, la función decorada generará estados intermedios
+    a medida que avanza el algoritmo de ordenación.
     
-    When trace=False, the decorated function will simply return the
-    final sorted list.
+    Cuando trace=False, la función decorada simplemente devolverá la
+    lista ordenada final.
     
     Args:
-        func: The sorting function to decorate
+        func: La función de ordenación a decorar
         
     Returns:
-        A wrapped function that can either return a sorted list or
-        yield intermediate states
+        Una función envuelta que puede devolver una lista ordenada o
+        generar estados intermedios
     """
     @functools.wraps(func)
     def wrapper(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, List[int]]]:
-        # Make a copy of the input data to avoid modifying the original
+        # Hacer una copia de los datos de entrada para evitar modificar el original
         data_copy = copy.deepcopy(data)
         
         if not trace:
-            # If tracing is disabled, just call the original function
+            # Si el seguimiento está desactivado, simplemente llamar a la función original
             return func(data_copy)
         
-        # If tracing is enabled, wrap the function to yield intermediate states
+        # Si el seguimiento está habilitado, envolver la función para generar estados intermedios
         def trace_generator() -> Generator[List[int], None, List[int]]:
-            # Yield the initial state
+            # Generar el estado inicial
             yield copy.deepcopy(data_copy)
             
-            # For functions that return a generator when tracing is enabled
-            if hasattr(func, 'is_generator'):
-                # Pass along all intermediate states from the function
-                for state in func(data_copy, trace=True):
-                    yield copy.deepcopy(state)
-            else:
-                # For functions that don't yield intermediate states,
-                # just call the function and yield the final result
-                result = func(data_copy)
-                yield copy.deepcopy(result)
-                return result
-                
+            # Llamar a la función de ordenación
+            result = func(data_copy)
+            
+            # Generar el resultado final ordenado
+            yield copy.deepcopy(result)
+            
+            return result
+        
         return trace_generator()
     
-    # Add a flag to indicate this function has been decorated
+    # Añadir un indicador para mostrar que esta función ha sido decorada
     wrapper.is_traceable = True
     
     return wrapper

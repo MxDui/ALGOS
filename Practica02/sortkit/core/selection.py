@@ -1,26 +1,8 @@
-"""
-MIT License
-
-Copyright (c) 2023 David Rivera Morales
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-"""
-
 from typing import List, Generator, Union
 import copy
-from sortkit.core.base import traceable
 
 
-@traceable
-def selection_sort(data: List[int], trace: bool = False) -> List[int]:
+def selection_sort(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, None]]:
     """
     Implementation of Selection Sort algorithm.
     
@@ -29,21 +11,33 @@ def selection_sort(data: List[int], trace: bool = False) -> List[int]:
     
     Args:
         data: The list to be sorted
-        trace: If True, the original function will be wrapped to yield 
-               intermediate states. This parameter is used by the traceable decorator.
-    
+        trace: If True, yield intermediate states during sorting
+        
     Returns:
-        The sorted list
+        If trace is False: The sorted list
+        If trace is True: A generator yielding steps of the sorting process
     """
     # Make a working copy to avoid modifying the input
     arr = copy.deepcopy(data)
+    
+    if trace:
+        return _selection_sort_with_trace(arr)
+    else:
+        return _selection_sort_without_trace(arr)
+
+
+def _selection_sort_without_trace(arr: List[int]) -> List[int]:
+    """
+    Standard implementation of selection sort.
+    
+    Args:
+        arr: The list to be sorted
+        
+    Returns:
+        The sorted list
+    """
     n = len(arr)
     
-    # This is the generator version called by the traceable decorator
-    if trace and hasattr(selection_sort, 'is_traceable'):
-        return _selection_sort_trace(arr)
-    
-    # The normal non-tracing version
     for i in range(n - 1):
         # Find the minimum element in remaining unsorted array
         min_idx = i
@@ -57,21 +51,20 @@ def selection_sort(data: List[int], trace: bool = False) -> List[int]:
     return arr
 
 
-def _selection_sort_trace(data: List[int]) -> Generator[List[int], None, List[int]]:
+def _selection_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
     """
-    Generator version of selection sort that yields after each swap.
+    Selection sort with tracing that yields after each swap.
     
     Args:
-        data: The list to be sorted
+        arr: The list to be sorted
         
     Yields:
         The list at each step of the sorting process
-    
-    Returns:
-        The final sorted list
     """
-    arr = data  # The caller already made a copy
     n = len(arr)
+    
+    # Yield the initial state
+    yield copy.deepcopy(arr)
     
     for i in range(n - 1):
         # Find the minimum element in remaining unsorted array
@@ -81,11 +74,8 @@ def _selection_sort_trace(data: List[int]) -> Generator[List[int], None, List[in
                 min_idx = j
         
         # Swap the found minimum element with the first element
-        if min_idx != i:  # Only swap and yield if actually changing
+        if min_idx != i:  # Only swap if needed
             arr[i], arr[min_idx] = arr[min_idx], arr[i]
             yield copy.deepcopy(arr)
     
-    return arr
-
-# Add an attribute to indicate this function yields a generator when trace=True
-selection_sort.is_generator = True
+    # The generator will be consumed by the calling function

@@ -1,101 +1,86 @@
-"""
-MIT License
-
-Copyright (c) 2023 David Rivera Morales
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-"""
-
 from typing import List, Generator, Union
 import copy
-from sortkit.core.base import traceable
 
 
-@traceable
-def insertion_sort(data: List[int], trace: bool = False) -> List[int]:
+def insertion_sort(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, None]]:
     """
-    Implementation of Insertion Sort algorithm.
+    Implementación del algoritmo de Ordenación por Inserción.
     
-    Insertion sort builds the final sorted array one item at a time. 
-    It takes each element from the unsorted part and inserts it into its 
-    correct position in the sorted part.
+    La ordenación por inserción construye el array ordenado final un elemento a la vez.
+    Toma cada elemento de la parte no ordenada y lo inserta en su
+    posición correcta en la parte ordenada.
     
     Args:
-        data: The list to be sorted
-        trace: If True, the original function will be wrapped to yield 
-               intermediate states. This parameter is used by the traceable decorator.
-    
+        data: La lista a ordenar
+        trace: Si es True, genera estados intermedios durante la ordenación
+        
     Returns:
-        The sorted list
+        Si trace es False: La lista ordenada
+        Si trace es True: Un generador que produce pasos del proceso de ordenación
     """
-    # Make a working copy to avoid modifying the input
+    # Hacer una copia de trabajo para evitar modificar la entrada
     arr = copy.deepcopy(data)
     
-    # This is the generator version called by the traceable decorator
-    if trace and hasattr(insertion_sort, 'is_traceable'):
-        return _insertion_sort_trace(arr)
-    
-    # The normal non-tracing version
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        
-        # Move elements greater than key one position ahead
-        while j >= 0 and arr[j] > key:
-            arr[j + 1] = arr[j]
-            j -= 1
-            
-        # Place the key at its correct position
-        arr[j + 1] = key
-    
-    return arr
+    if trace:
+        return _insertion_sort_with_trace(arr)
+    else:
+        return _insertion_sort_without_trace(arr)
 
 
-def _insertion_sort_trace(data: List[int]) -> Generator[List[int], None, List[int]]:
+def _insertion_sort_without_trace(arr: List[int]) -> List[int]:
     """
-    Generator version of insertion sort that yields after each insertion.
+    Implementación estándar de la ordenación por inserción.
     
     Args:
-        data: The list to be sorted
+        arr: La lista a ordenar
+        
+    Returns:
+        La lista ordenada
+    """
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        
+        # Mover elementos mayores que la clave una posición adelante
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+            
+        # Colocar la clave en su posición correcta
+        arr[j + 1] = key
+    
+    return arr
+
+
+def _insertion_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
+    """
+    Ordenación por inserción con seguimiento que genera después de cada inserción.
+    
+    Args:
+        arr: La lista a ordenar
         
     Yields:
-        The list at each step of the sorting process
-    
-    Returns:
-        The final sorted list
+        La lista en cada paso del proceso de ordenación
     """
-    arr = data  # The caller already made a copy
+    # Generar el estado inicial
+    yield copy.deepcopy(arr)
     
     for i in range(1, len(arr)):
         key = arr[i]
         j = i - 1
         
-        # Initial state before inserting the current element
-        initial_state = copy.deepcopy(arr)
-        
-        # Move elements greater than key one position ahead
-        moved = False
+        # Mover elementos mayores que la clave una posición adelante
+        changed = False
         while j >= 0 and arr[j] > key:
             arr[j + 1] = arr[j]
             j -= 1
-            moved = True
+            changed = True
             
-        # Place the key at its correct position
+        # Colocar la clave en su posición correcta
         arr[j + 1] = key
         
-        # Only yield if we actually moved elements
-        if moved or arr[i] != initial_state[i]:
+        # Solo generar si el array realmente cambió
+        if changed or j + 1 != i:
             yield copy.deepcopy(arr)
     
-    return arr
-
-# Add an attribute to indicate this function yields a generator when trace=True
-insertion_sort.is_generator = True
+    # El generador será consumido por la función que lo llama

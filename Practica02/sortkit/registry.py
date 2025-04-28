@@ -1,28 +1,13 @@
-"""
-MIT License
-
-Copyright (c) 2023 David Rivera Morales
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-"""
-
 from typing import Dict, Callable, List, Union, Generator
 from sortkit.core.selection import selection_sort
 from sortkit.core.insertion import insertion_sort
 from sortkit.core.quick import quick_sort
 from sortkit.core.merge import merge_sort
 from sortkit.core.heap import heap_sort
+from sortkit.structs.dllist import adapt_sort_algorithm, DoublyLinkedList
 
 
-# Dictionary mapping algorithm names to their implementations
+# Diccionario que mapea nombres de algoritmos a sus implementaciones
 ALGORITHMS: Dict[str, Callable] = {
     "selection": selection_sort,
     "insertion": insertion_sort,
@@ -31,32 +16,45 @@ ALGORITHMS: Dict[str, Callable] = {
     "heap": heap_sort,
 }
 
+# Diccionario para almacenar versiones adaptadas de algoritmos de ordenación para listas enlazadas
+LINKED_LIST_ALGORITHMS: Dict[str, Callable] = {}
 
-def get_algorithm(name: str) -> Callable:
+
+def get_algorithm(name: str, use_linked_list: bool = False) -> Callable:
     """
-    Get a sorting algorithm by name.
+    Obtiene un algoritmo de ordenación por su nombre.
     
     Args:
-        name: The name of the sorting algorithm
+        name: El nombre del algoritmo de ordenación
+        use_linked_list: Si es True, devuelve la versión de lista enlazada del algoritmo
         
     Returns:
-        The corresponding sorting function
+        La función de ordenación correspondiente
         
     Raises:
-        ValueError: If the algorithm name is not recognized
+        ValueError: Si el nombre del algoritmo no es reconocido
     """
-    if name not in ALGORITHMS:
-        valid_names = list(ALGORITHMS.keys())
-        raise ValueError(f"Unknown algorithm: {name}. Valid options are: {valid_names}")
-    
-    return ALGORITHMS[name]
+    if use_linked_list:
+        # Asegurar que la versión de lista enlazada esté disponible
+        if name not in LINKED_LIST_ALGORITHMS:
+            if name not in ALGORITHMS:
+                valid_names = list(ALGORITHMS.keys())
+                raise ValueError(f"Algoritmo desconocido: {name}. Las opciones válidas son: {valid_names}")
+            # Adaptar el algoritmo bajo demanda
+            LINKED_LIST_ALGORITHMS[name] = adapt_sort_algorithm(ALGORITHMS[name])
+        return LINKED_LIST_ALGORITHMS[name]
+    else:
+        if name not in ALGORITHMS:
+            valid_names = list(ALGORITHMS.keys())
+            raise ValueError(f"Algoritmo desconocido: {name}. Las opciones válidas son: {valid_names}")
+        return ALGORITHMS[name]
 
 
 def list_algorithms() -> List[str]:
     """
-    List all available sorting algorithms.
+    Lista todos los algoritmos de ordenación disponibles.
     
     Returns:
-        A list of all available algorithm names
+        Una lista de todos los nombres de algoritmos disponibles
     """
     return list(ALGORITHMS.keys())
