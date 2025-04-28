@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sortkit"
+version = "1.0.0"
+description = "Modular Sorting Algorithms Toolkit"
+authors = [
+    {name = "David Rivera Morales", email = "example@example.com"},
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "ruff>=0.0.240",
+]
+
+[project.scripts]
+sortkit = "sortkit.__main__:main"
+
+[tool.setuptools]
+package-dir = {'' = '.'}
+packages = ["sortkit"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+select = ["E", "F", "B", "I"]
+ignore = [] 
