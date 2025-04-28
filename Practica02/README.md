@@ -1,4 +1,4 @@
-# SortKit: Kit Modular de Algoritmos de Ordenamiento
+# Practica02: Kit Modular de Algoritmos de Ordenamiento
 
 Un paquete Python modular que implementa y analiza algoritmos clásicos de ordenamiento. Este kit proporciona implementaciones correctas y rastreables de los algoritmos de ordenamiento por selección, por inserción, rápido, heap y merge.
 
@@ -26,7 +26,7 @@ pip install -e ".[dev]"
 
 ```bash
 # Ejecutar la demostración automática de todos los algoritmos
-python -m sortkit
+python -m practica02
 ```
 
 Al ejecutar el módulo, se mostrará automáticamente:
@@ -39,7 +39,7 @@ Al ejecutar el módulo, se mostrará automáticamente:
 ### API de Python
 
 ```python
-from sortkit import quick_sort, merge_sort
+from practica02 import quick_sort, merge_sort
 
 # Ordenamiento básico
 sorted_list = quick_sort([3, 1, 4, 1, 5, 9, 2, 6])

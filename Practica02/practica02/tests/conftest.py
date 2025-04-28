@@ -1,9 +1,7 @@
- 
-
 import pytest
 import random
 from typing import List
-from sortkit.structs.dllist import DoublyLinkedList
+from practica02.structs.dllist import DoublyLinkedList
 
 
 @pytest.fixture

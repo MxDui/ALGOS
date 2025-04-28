@@ -1,10 +1,10 @@
 from typing import Dict, Callable, List, Union, Generator
-from sortkit.core.selection import selection_sort
-from sortkit.core.insertion import insertion_sort
-from sortkit.core.quick import quick_sort
-from sortkit.core.merge import merge_sort
-from sortkit.core.heap import heap_sort
-from sortkit.structs.dllist import adapt_sort_algorithm, DoublyLinkedList
+from practica02.core.selection import selection_sort
+from practica02.core.insertion import insertion_sort
+from practica02.core.quick import quick_sort
+from practica02.core.merge import merge_sort
+from practica02.core.heap import heap_sort
+from practica02.structs.dllist import adapt_sort_algorithm, DoublyLinkedList
 
 
 # Diccionario que mapea nombres de algoritmos a sus implementaciones
@@ -57,4 +57,4 @@ def list_algorithms() -> List[str]:
     Returns:
         Una lista de todos los nombres de algoritmos disponibles
     """
-    return list(ALGORITHMS.keys())
+    return list(ALGORITHMS.keys()) 

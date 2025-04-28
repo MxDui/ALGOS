@@ -103,4 +103,4 @@ def _quick_sort_with_trace(arr: List[int], low: int, high: int) -> Generator[Lis
         yield from _quick_sort_with_trace(arr, low, pivot_idx - 1)
         yield from _quick_sort_with_trace(arr, pivot_idx + 1, high)
     
-    # Si solo hay 1 elemento o subarray vacío, no es necesario generar
+    # Si solo hay 1 elemento o subarray vacío, no es necesario generar 

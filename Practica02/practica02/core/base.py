@@ -71,4 +71,4 @@ def traceable(func: Callable) -> Callable:
     # Añadir un indicador para mostrar que esta función ha sido decorada
     wrapper.is_traceable = True
     
-    return wrapper
+    return wrapper 

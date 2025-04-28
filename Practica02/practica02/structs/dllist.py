@@ -1,4 +1,4 @@
-from typing import List, Optional, Iterator, TypeVar, Generic, Any, Union, Callable, Dict, Generator
+from typing import List, Optional, Iterator, TypeVar, Generic, Any, Union, Callable, Dict, Generator, Iterable
 import copy
 import functools
 
@@ -206,32 +206,27 @@ class DoublyLinkedList(Generic[T]):
         elif index == self._size:
             self.append(value)
         else:
-            # Encontrar el nodo en el índice
+            new_node = Node(value)
             current = self.head
             for _ in range(index):
                 current = current.next
-            
-            # Crear un nuevo nodo e insertarlo antes del actual
-            new_node = Node(value)
             new_node.prev = current.prev
             new_node.next = current
             current.prev.next = new_node
             current.prev = new_node
-            
             self._size += 1
     
     def remove(self, value: T) -> None:
         """
-        Elimina la primera ocurrencia de un valor de la lista.
+        Elimina la primera ocurrencia del valor.
         
         Args:
             value: El valor a eliminar
             
         Raises:
-            ValueError: Si el valor no se encuentra
+            ValueError: Si el valor no se encuentra en la lista
         """
         current = self.head
-        
         while current:
             if current.value == value:
                 self._remove_node(current)
@@ -245,10 +240,10 @@ class DoublyLinkedList(Generic[T]):
         Elimina y devuelve el elemento en el índice especificado.
         
         Args:
-            index: El índice del elemento a eliminar (por defecto: -1, el último elemento)
+            index: El índice del elemento a eliminar (por defecto, el último)
             
         Returns:
-            El valor del elemento eliminado
+            El valor eliminado
             
         Raises:
             IndexError: Si el índice está fuera de rango
@@ -272,32 +267,33 @@ class DoublyLinkedList(Generic[T]):
         Args:
             node: El nodo a eliminar
         """
+        # Actualizar referencias a prev y next
         if node.prev:
             node.prev.next = node.next
         else:
-            # El nodo es la cabeza
+            # Nodo es la cabeza
             self.head = node.next
         
         if node.next:
             node.next.prev = node.prev
         else:
-            # El nodo es la cola
+            # Nodo es la cola
             self.tail = node.prev
         
         self._size -= 1
     
     def index(self, value: T) -> int:
         """
-        Devuelve el índice de la primera ocurrencia del valor.
+        Devuelve el índice del primer elemento con el valor especificado.
         
         Args:
             value: El valor a buscar
             
         Returns:
-            El índice del valor
+            El índice del elemento encontrado
             
         Raises:
-            ValueError: Si el valor no se encuentra
+            ValueError: Si el valor no se encuentra en la lista
         """
         current = self.head
         index = 0
@@ -330,8 +326,8 @@ class DoublyLinkedList(Generic[T]):
         Intercambia los valores en los índices i y j.
         
         Args:
-            i: El primer índice
-            j: El segundo índice
+            i: Primer índice
+            j: Segundo índice
             
         Raises:
             IndexError: Si alguno de los índices está fuera de rango
@@ -347,11 +343,11 @@ class DoublyLinkedList(Generic[T]):
         if i == j:
             return
         
-        # Obtener los nodos en los índices i y j
+        # Obtener los nodos
         node_i = self._get_node(i)
         node_j = self._get_node(j)
         
-        # Intercambiar los valores
+        # Intercambiar valores
         node_i.value, node_j.value = node_j.value, node_i.value
     
     def _get_node(self, index: int) -> Node[T]:
@@ -389,108 +385,109 @@ class DoublyLinkedList(Generic[T]):
     
     def to_list(self) -> List[T]:
         """
-        Convierte la lista enlazada a una lista de Python.
+        Convierte la lista enlazada a una lista Python.
         
         Returns:
-            Una lista con los valores de la lista enlazada
+            Una lista Python con los mismos valores que la lista enlazada
         """
         return list(self)
     
     @classmethod
     def from_list(cls, lst: List[T]) -> 'DoublyLinkedList[T]':
         """
-        Crea una nueva DoublyLinkedList a partir de una lista de Python.
+        Crea una lista enlazada a partir de una lista Python.
         
         Args:
-            lst: La lista a convertir
+            lst: La lista Python a convertir
             
         Returns:
-            Una nueva DoublyLinkedList con los valores de la lista
+            Una nueva lista enlazada con los mismos valores que la lista Python
         """
         return cls(lst)
 
 
 def adapt_sort_algorithm(sort_func: Callable) -> Callable:
     """
-    Adapta una función de ordenación para que funcione con DoublyLinkedList.
+    Adapta una función de ordenación para trabajar con DoublyLinkedList.
     
     Args:
-        sort_func: La función de ordenación a adaptar
+        sort_func: La función de ordenación original que opera en listas
         
     Returns:
-        Una nueva función que puede ordenar DoublyLinkedList
+        Una nueva función que soporta DoublyLinkedList
     """
+    
     @functools.wraps(sort_func)
     def wrapper(data: Union[List[int], DoublyLinkedList[int]], trace: bool = False) -> Union[
         DoublyLinkedList[int], Generator[DoublyLinkedList[int], None, DoublyLinkedList[int]]
     ]:
-        if isinstance(data, DoublyLinkedList):
-            if trace:
-                # Si el seguimiento está habilitado, generar estados intermedios
-                steps = []
-                
-                # Convertir a lista, ordenar con seguimiento y convertir los pasos de nuevo a DoublyLinkedList
-                data_list = data.to_list()
-                for step in sort_func(data_list, trace=True):
-                    steps.append(DoublyLinkedList(step))
-                
-                # Devolver un generador para los pasos
-                for step in steps:
-                    yield step
-                
-                return steps[-1]
-            else:
-                # Si el seguimiento está desactivado, simplemente ordenar y devolver
-                data_list = data.to_list()
-                result_list = sort_func(data_list, trace=False)
-                return DoublyLinkedList(result_list)
+        """
+        Envoltorio para ordenar una DoublyLinkedList utilizando una función de ordenación de lista.
+        
+        Args:
+            data: La DoublyLinkedList a ordenar
+            trace: Si se deben generar estados intermedios
+            
+        Returns:
+            Si trace es False, la DoublyLinkedList ordenada
+            Si trace es True, un generador que produce estados intermedios como DoublyLinkedList
+        """
+        # Convertir a lista
+        lst = data.to_list() if isinstance(data, DoublyLinkedList) else data
+        
+        if trace:
+            # Ejecutar con seguimiento y convertir cada paso a DoublyLinkedList
+            steps_generator = sort_func(lst, trace=True)
+            for step in steps_generator:
+                yield DoublyLinkedList(step)
         else:
-            # Si no es DoublyLinkedList, pasar a la función original
-            return sort_func(data, trace)
+            # Ejecutar sin seguimiento y convertir el resultado a DoublyLinkedList
+            result = sort_func(lst, trace=False)
+            return DoublyLinkedList(result)
     
     return wrapper
 
 
-# Diccionario para almacenar algoritmos de ordenación adaptados para listas enlazadas
-_LINKED_LIST_ALGORITHMS: Dict[str, Callable] = {}
+# Diccionario para algoritmos adaptados
+LINKED_LIST_ALGORITHMS: Dict[str, Callable] = {}
 
 
 def register_linked_list_algorithm(name: str, algorithm: Callable) -> None:
     """
-    Registra un algoritmo de ordenación para su uso con DoublyLinkedList.
+    Registra una función de ordenación adaptada para DoublyLinkedList.
     
     Args:
         name: El nombre del algoritmo
-        algorithm: La función del algoritmo a registrar
+        algorithm: La función de ordenación original
     """
-    _LINKED_LIST_ALGORITHMS[name] = adapt_sort_algorithm(algorithm)
+    LINKED_LIST_ALGORITHMS[name] = adapt_sort_algorithm(algorithm)
 
 
 def get_linked_list_algorithm(name: str) -> Callable:
     """
-    Obtiene un algoritmo de ordenación registrado por su nombre.
+    Obtiene una función de ordenación adaptada para DoublyLinkedList por su nombre.
     
     Args:
         name: El nombre del algoritmo
         
     Returns:
-        La función del algoritmo
+        La función de ordenación adaptada
         
     Raises:
-        ValueError: Si el algoritmo no está registrado
+        ValueError: Si el nombre del algoritmo no está registrado
     """
-    if name not in _LINKED_LIST_ALGORITHMS:
-        valid_names = list(_LINKED_LIST_ALGORITHMS.keys())
-        raise ValueError(f"Algoritmo de lista enlazada no registrado: {name}. Algoritmos registrados: {valid_names}")
+    if name not in LINKED_LIST_ALGORITHMS:
+        valid_names = list(LINKED_LIST_ALGORITHMS.keys())
+        raise ValueError(f"Algoritmo de lista enlazada desconocido: {name}. Las opciones válidas son: {valid_names}")
     
-    return _LINKED_LIST_ALGORITHMS[name]
+    return LINKED_LIST_ALGORITHMS[name]
 
 
 def list_linked_list_algorithms() -> List[str]:
     """
-    Lista todos los algoritmos de ordenación de listas enlazadas registrados.
+    Lista todos los nombres de algoritmos adaptados para DoublyLinkedList disponibles.
     
     Returns:
-        Una lista de nombres de algoritmos registrados
+        Una lista de nombres de algoritmos adaptados
     """
-    return list(_LINKED_LIST_ALGORITHMS.keys())
+    return list(LINKED_LIST_ALGORITHMS.keys()) 

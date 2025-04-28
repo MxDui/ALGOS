@@ -2,8 +2,8 @@ import sys
 import random
 import time
 from typing import List, Optional, Any, Dict
-from sortkit.registry import ALGORITHMS, list_algorithms, get_algorithm
-from sortkit.structs.dllist import DoublyLinkedList
+from practica02.registry import ALGORITHMS, list_algorithms, get_algorithm
+from practica02.structs.dllist import DoublyLinkedList
 
 def generate_random_data(size: int, seed: Optional[int] = None) -> List[int]:
     """
@@ -122,7 +122,7 @@ def run_demo(size: int, trace: bool, seed: Optional[int], use_linked_list: bool 
         use_linked_list: Si se debe usar la implementación de lista enlazada
     """
     implementation = "Lista Enlazada" if use_linked_list else "Array"
-    print(f"\n===== DEMOSTRACIÓN DE SORTKIT (Implementación de {implementation}) =====\n")
+    print(f"\n===== DEMOSTRACIÓN DE PRACTICA02 (Implementación de {implementation}) =====\n")
     
     # Asegurar que se usen los mismos datos para todos los algoritmos en la demostración
     if seed is not None:
@@ -175,7 +175,7 @@ def run_demo(size: int, trace: bool, seed: Optional[int], use_linked_list: bool 
         print("-" * 50)
 
 
-if __name__ == "__main__":
+def main():
     # Usar un tamaño pequeño para mostrar mejor los pasos del algoritmo
     size = 8
     trace = True
@@ -186,3 +186,6 @@ if __name__ == "__main__":
     
     # Ejecutar con implementación de lista enlazada
     run_demo(size=size, trace=trace, seed=seed, use_linked_list=True)
+
+if __name__ == "__main__":
+    main() 

@@ -83,4 +83,4 @@ def _insertion_sort_with_trace(arr: List[int]) -> Generator[List[int], None, Non
         if changed or j + 1 != i:
             yield copy.deepcopy(arr)
     
-    # El generador será consumido por la función que lo llama
+    # El generador será consumido por la función que lo llama 

@@ -78,4 +78,4 @@ def _selection_sort_with_trace(arr: List[int]) -> Generator[List[int], None, Non
             arr[i], arr[min_idx] = arr[min_idx], arr[i]
             yield copy.deepcopy(arr)
     
-    # The generator will be consumed by the calling function
+    # The generator will be consumed by the calling function 

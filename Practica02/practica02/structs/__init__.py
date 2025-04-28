@@ -1,0 +1,1 @@
+from practica02.structs.dllist import DoublyLinkedList, adapt_sort_algorithm 

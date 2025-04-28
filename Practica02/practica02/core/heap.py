@@ -117,4 +117,4 @@ def _heap_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
         _heapify(arr, i, 0)
         # Solo generar si el montículo cambió
         if arr[:i] != before_heapify[:i]:
-            yield copy.deepcopy(arr)
+            yield copy.deepcopy(arr) 

@@ -141,4 +141,4 @@ def _merge_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
     _merge(arr, left_copy, right_copy)
     
     # Mostrar el resultado mezclado
-    yield copy.deepcopy(arr)
+    yield copy.deepcopy(arr) 

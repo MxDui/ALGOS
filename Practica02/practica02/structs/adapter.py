@@ -1,8 +1,8 @@
 from typing import Dict, List, Any, Callable, Optional
 import importlib
 
-from sortkit.algorithms.registry import get_algorithm, list_algorithms
-from sortkit.structs.dllist import register_linked_list_algorithm
+from practica02.registry import get_algorithm, list_algorithms
+from practica02.structs.dllist import register_linked_list_algorithm
 
 
 def register_all_for_linked_list() -> List[str]:
