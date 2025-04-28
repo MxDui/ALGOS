@@ -5,9 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sortkit"
 version = "1.0.0"
-description = "Modular Sorting Algorithms Toolkit"
+description = "Distintos algoritmos de ordenamiento"
 authors = [
-    {name = "David Rivera Morales", email = "example@example.com"},
+    {name = "David Rivera Morales"},
+    {name = "Jose Antonio Gallegos Cortes"},
 ]
 readme = "README.md"
 requires-python = ">=3.11"

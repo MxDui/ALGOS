@@ -8,79 +8,79 @@ from sortkit.structs.dllist import DoublyLinkedList
 
 
 class TestHeapSort:
-    """Test suite for heap sort algorithm."""
+    """Suite de pruebas para el algoritmo de ordenamiento heap sort."""
 
     def test_empty_list(self, empty_list: List[int]):
-        """Test sorting an empty list."""
+        """Prueba de ordenamiento de una lista vacía."""
         result = heap_sort(empty_list)
         assert result == []
 
     def test_single_element_list(self, single_element_list: List[int]):
-        """Test sorting a single element list."""
+        """Prueba de ordenamiento de una lista con un solo elemento."""
         result = heap_sort(single_element_list)
         assert result == [42]
 
     def test_sorted_list(self, sorted_list: List[int]):
-        """Test sorting an already sorted list."""
+        """Prueba de ordenamiento de una lista ya ordenada."""
         result = heap_sort(sorted_list)
         assert result == sorted_list
 
     def test_reversed_list(self, reversed_list: List[int]):
-        """Test sorting a reversed list."""
+        """Prueba de ordenamiento de una lista invertida."""
         result = heap_sort(reversed_list)
         assert result == sorted(reversed_list)
 
     def test_random_list(self, random_list: List[int]):
-        """Test sorting a random list."""
+        """Prueba de ordenamiento de una lista aleatoria."""
         result = heap_sort(random_list)
         assert result == sorted(random_list)
 
     def test_duplicates_list(self, duplicates_list: List[int]):
-        """Test sorting a list with duplicates."""
+        """Prueba de ordenamiento de una lista con elementos duplicados."""
         result = heap_sort(duplicates_list)
         assert result == sorted(duplicates_list)
 
     def test_large_list(self):
-        """Test sorting a large list."""
+        """Prueba de ordenamiento de una lista grande."""
         import random
         large_list = [random.randint(0, 1000) for _ in range(1000)]
         result = heap_sort(large_list)
         assert result == sorted(large_list)
 
     def test_heapify_process(self):
-        """Test the heapify process specifically."""
-        # This test checks if the heap property is maintained during sorting
+        """Prueba específica del proceso de heapify."""
+        # Esta prueba verifica si la propiedad del heap se mantiene durante la ordenación
         arr = [3, 1, 4, 1, 5, 9, 2, 6]
         
-        # Make a copy to test intermediate steps
+        # Hacer una copia para probar pasos intermedios
         test_arr = arr.copy()
         
-        # After building max heap, the largest element should be at the root (index 0)
-        # We'll call a helper function to build the heap
+        # Después de construir el max heap, el elemento más grande debe estar en la raíz (índice 0)
+        # Llamaremos a una función auxiliar para construir el heap
         _build_max_heap(test_arr)
         assert test_arr[0] == max(arr)
         
-        # Remove the root and test heap property again
-        # (This simulates part of the heap sort process)
+        # Remover la raíz y probar la propiedad del heap nuevamente
+        # (Esto simula parte del proceso de heap sort)
         test_arr[0], test_arr[-1] = test_arr[-1], test_arr[0]
         heap_size = len(test_arr) - 1
         _heapify(test_arr, 0, heap_size)
         
-        # The new root should be the second largest element
+        # La nueva raíz debe ser el segundo elemento más grande
         assert test_arr[0] == max(test_arr[:heap_size])
         
     def test_stability(self):
-        """Test that heap sort is NOT stable (doesn't maintain relative order of equal elements)."""
-        # Create a list of tuples (value, original_position)
+        """Prueba que el heap sort NO es estable (no mantiene el orden relativo de elementos iguales)."""
+        # Crear una lista de tuplas (valor, posición_original)
         original_list = [(5, 1), (3, 2), (5, 3), (2, 4), (3, 5)]
         
-        # Sort by the first element in each tuple
+        # Ordenar por el primer elemento en cada tupla
         result = heap_sort(original_list, key=lambda x: x[0])
         
-        # Check that elements are sorted by their first element
+        # Verificar que los elementos están ordenados por su primer elemento
         for i in range(len(result) - 1):
             assert result[i][0] <= result[i + 1][0]
         
-        # Heap sort is NOT stable, so we can't make specific assertions about
-        # the ordering of equal elements, we just verify the list is sorted correctly
+        # Heap sort NO es estable, así que no podemos hacer afirmaciones específicas sobre
+        # el ordenamiento de elementos iguales, solo verificamos que la lista esté correctamente ordenada
         assert sorted(result, key=lambda x: x[0]) == result 

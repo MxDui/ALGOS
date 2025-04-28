@@ -1,70 +1,68 @@
-# SortKit: Modular Sorting Algorithms Toolkit
+# SortKit: Kit Modular de Algoritmos de Ordenamiento
 
-A modular Python package implementing and analyzing classic sorting algorithms. This toolkit provides correct, traceable implementations of Selection, Insertion, Quick, Heap, and Merge Sort algorithms.
+Un paquete Python modular que implementa y analiza algoritmos clásicos de ordenamiento. Este kit proporciona implementaciones correctas y rastreables de los algoritmos de ordenamiento por selección, por inserción, rápido, heap y merge.
 
-## Features
+## Características
 
-- Five classic sorting algorithms with detailed tracing capability
-- Command-line interface for easy demonstration and testing
-- Benchmarking utilities to compare algorithm performance
-- Optional doubly-linked list implementation with the same algorithms
-- Comprehensive test suite and documentation
+- Cinco algoritmos clásicos de ordenamiento con capacidad detallada de seguimiento
+- Demostración automática de todos los algoritmos con visualización de pasos
+- Utilidades de evaluación comparativa para comparar el rendimiento de los algoritmos
+- Implementación opcional de lista doblemente enlazada con los mismos algoritmos
+- Suite completa de pruebas y documentación
 
-## Installation
+## Instalación
 
 ```bash
-# Install in development mode
+# Instalar en modo desarrollo
 pip install -e .
 
-# Install with development dependencies
+# Instalar con dependencias de desarrollo
 pip install -e ".[dev]"
 ```
 
-## Usage
+## Uso
 
-### Command Line Interface
+### Ejecución de la Demostración
 
 ```bash
-# Run a demo of all algorithms
-python -m sortkit demo
-
-# Run a specific algorithm
-python -m sortkit --algo quick --size 10 --trace
-
-# Use the doubly-linked list implementation
-python -m sortkit --algo merge --size 20 --linked-list
-
-# Get help
-python -m sortkit --help
+# Ejecutar la demostración automática de todos los algoritmos
+python -m sortkit
 ```
 
-### Python API
+Al ejecutar el módulo, se mostrará automáticamente:
+
+- Una demostración de todos los algoritmos usando implementación de array
+- Una demostración de todos los algoritmos usando implementación de lista enlazada
+- Visualización paso a paso del proceso de ordenamiento
+- Medición del tiempo de ejecución para cada algoritmo
+
+### API de Python
 
 ```python
 from sortkit import quick_sort, merge_sort
 
-# Basic sorting
+# Ordenamiento básico
 sorted_list = quick_sort([3, 1, 4, 1, 5, 9, 2, 6])
 
-# Get intermediate traces
+# Obtener trazas intermedias
 for step in quick_sort([3, 1, 4, 1, 5, 9, 2, 6], trace=True):
     print(step)
 ```
 
-## Algorithm Complexity
+## Complejidad de Algoritmos
 
-| Algorithm      | Time (Best) | Time (Average) | Time (Worst) | Space    | Stable |
-| -------------- | ----------- | -------------- | ------------ | -------- | ------ |
-| Selection Sort | O(n²)       | O(n²)          | O(n²)        | O(1)     | No     |
-| Insertion Sort | O(n)        | O(n²)          | O(n²)        | O(1)     | Yes    |
-| Quick Sort     | O(n log n)  | O(n log n)     | O(n²)        | O(log n) | No     |
-| Merge Sort     | O(n log n)  | O(n log n)     | O(n log n)   | O(n)     | Yes    |
-| Heap Sort      | O(n log n)  | O(n log n)     | O(n log n)   | O(1)     | No     |
+| Algoritmo                  | Tiempo (Mejor) | Tiempo (Promedio) | Tiempo (Peor) | Espacio  | Estable |
+| -------------------------- | -------------- | ----------------- | ------------- | -------- | ------- |
+| Ordenamiento por Selección | O(n²)          | O(n²)             | O(n²)         | O(1)     | No      |
+| Ordenamiento por Inserción | O(n)           | O(n²)             | O(n²)         | O(1)     | Sí      |
+| Ordenamiento Rápido        | O(n log n)     | O(n log n)        | O(n²)         | O(log n) | No      |
+| Ordenamiento Merge         | O(n log n)     | O(n log n)        | O(n log n)    | O(n)     | Sí      |
+| Ordenamiento Heap          | O(n log n)     | O(n log n)        | O(n log n)    | O(1)     | No      |
 
-## License
+## Licencia
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Este proyecto está licenciado bajo la Licencia MIT - consulte el archivo LICENSE para más detalles.
 
-## Author
+## Autor
 
-David Rivera Morales
+David Rivera Morales y José Antonio Gallegos Cortés
