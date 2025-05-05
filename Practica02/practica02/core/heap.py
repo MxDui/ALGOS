@@ -4,7 +4,7 @@ import copy
 
 def heap_sort(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, None]]:
     """
-    Implementación del algoritmo de Ordenación por Montículo (Heap Sort).
+    Implementación del algoritmo Heap Sort.
     
     Heap sort construye un montículo máximo (max heap) a partir del array y extrae repetidamente
     el elemento máximo, colocándolo al final del array.
@@ -17,7 +17,7 @@ def heap_sort(data: List[int], trace: bool = False) -> Union[List[int], Generato
         Si trace es False: La lista ordenada
         Si trace es True: Un generador que produce pasos del proceso de ordenación
     """
-    # Hacer una copia de trabajo para evitar modificar la entrada
+    # Hacemos una copia para evitar modificar la entrada
     arr = copy.deepcopy(data)
     
     if trace:
@@ -38,11 +38,11 @@ def _heap_sort_without_trace(arr: List[int]) -> List[int]:
     """
     n = len(arr)
     
-    # Construir un montículo máximo
+    # Construimos un montículo máximo
     for i in range(n // 2 - 1, -1, -1):
         _heapify(arr, n, i)
     
-    # Extraer elementos uno por uno
+    # Extraemos elementos uno por uno
     for i in range(n - 1, 0, -1):
         arr[0], arr[i] = arr[i], arr[0]  # Intercambiar
         _heapify(arr, i, 0)
@@ -52,22 +52,24 @@ def _heap_sort_without_trace(arr: List[int]) -> List[int]:
 
 def _heapify(arr: List[int], n: int, i: int) -> None:
     """
-    Heapifica un subárbol con raíz en el índice i.
+    'Heapifica' un subárbol con raíz en el índice i. Es decir reorganiza un subárbol para 
+    que cumpla la propiedad del montículo. Asegurando que un subárbol cuya raíz está en el 
+    índice i cumpla con la propiedad de que cada nodo padre es mayor o igual que sus hijos.
     
     Args:
-        arr: El array a heapificar
+        arr: El array a 'heapificar'
         n: El tamaño del montículo
-        i: El índice de la raíz del subárbol a heapificar
+        i: El índice de la raíz del subárbol a 'heapificar'.
     """
-    largest = i  # Inicializar el más grande como raíz
+    largest = i  # Inicializamps el más grande como raíz
     left = 2 * i + 1  # Hijo izquierdo
     right = 2 * i + 2  # Hijo derecho
     
-    # Comprobar si el hijo izquierdo existe y es mayor que la raíz
+    # Comprobamos si el hijo izquierdo existe y es mayor que la raíz
     if left < n and arr[left] > arr[largest]:
         largest = left
     
-    # Comprobar si el hijo derecho existe y es mayor que el más grande hasta ahora
+    # Comprobamos si el hijo derecho existe y es mayor que el más grande hasta ahora
     if right < n and arr[right] > arr[largest]:
         largest = right
     
@@ -75,7 +77,7 @@ def _heapify(arr: List[int], n: int, i: int) -> None:
     if largest != i:
         arr[i], arr[largest] = arr[largest], arr[i]  # Intercambiar
         
-        # Heapificar recursivamente el subárbol afectado
+        # 'Heapificamos' recursivamente el subárbol afectado
         _heapify(arr, n, largest)
 
 
@@ -91,23 +93,23 @@ def _heap_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
     """
     n = len(arr)
     
-    # Generar el estado inicial
+    # Genera el estado inicial
     yield copy.deepcopy(arr)
     
-    # Construir un montículo máximo con pasos intermedios
+    # Construye un montículo máximo con pasos intermedios
     for i in range(n // 2 - 1, -1, -1):
         before_heapify = copy.deepcopy(arr)
         _heapify(arr, n, i)
-        # Solo generar si el montículo cambió
+        # Solo lo generamos si el montículo cambió
         if arr != before_heapify:
             yield copy.deepcopy(arr)
     
-    # Generar después de que se construyó el montículo máximo
+    # Generamos después de que se construyó el montículo máximo
     yield copy.deepcopy(arr)
     
-    # Extraer elementos uno por uno
+    # Extraemos los elementos uno por uno
     for i in range(n - 1, 0, -1):
-        # Intercambiar raíz con el último elemento
+        # Intercambia la raíz con el último elemento
         arr[0], arr[i] = arr[i], arr[0]
         # Generar después del intercambio
         yield copy.deepcopy(arr)

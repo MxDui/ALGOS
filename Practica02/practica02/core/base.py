@@ -6,7 +6,7 @@ T = TypeVar('T')
 
 
 class SortAlgorithm(Protocol):
-    """Protocolo que define la interfaz para todos los algoritmos de ordenación."""
+    """Protocolo que define la interfaz para todos los algoritmos de ordenamiento."""
     
     def __call__(
         self, data: List[int], trace: bool = False
@@ -16,7 +16,7 @@ class SortAlgorithm(Protocol):
         
         Args:
             data: La lista a ordenar
-            trace: Si es True, genera estados intermedios durante la ordenación
+            trace: Si es True, genera estados intermedios durante el ordenamiento
                   Si es False, solo devuelve la lista ordenada final
                   
         Returns:
@@ -29,10 +29,10 @@ class SortAlgorithm(Protocol):
 
 def traceable(func: Callable) -> Callable:
     """
-    Decorador que añade capacidad de seguimiento a funciones de ordenación.
+    Decorador que añade capacidad de seguimiento a las funciones de ordenamiento.
     
     Cuando trace=True, la función decorada generará estados intermedios
-    a medida que avanza el algoritmo de ordenación.
+    a medida que avanza el algoritmo de ordenamiento.
     
     Cuando trace=False, la función decorada simplemente devolverá la
     lista ordenada final.
@@ -46,22 +46,22 @@ def traceable(func: Callable) -> Callable:
     """
     @functools.wraps(func)
     def wrapper(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, List[int]]]:
-        # Hacer una copia de los datos de entrada para evitar modificar el original
+        # Hacemos una copia de los datos de entrada para evitar modificar el original
         data_copy = copy.deepcopy(data)
         
         if not trace:
-            # Si el seguimiento está desactivado, simplemente llamar a la función original
+            # Si el seguimiento está desactivado, simplemente llama a la función original
             return func(data_copy)
         
         # Si el seguimiento está habilitado, envolver la función para generar estados intermedios
         def trace_generator() -> Generator[List[int], None, List[int]]:
-            # Generar el estado inicial
+            # Genera el estado inicial
             yield copy.deepcopy(data_copy)
             
-            # Llamar a la función de ordenación
+            # Llama a la función de ordenamiento
             result = func(data_copy)
             
-            # Generar el resultado final ordenado
+            # Genera el resultado final ordenado
             yield copy.deepcopy(result)
             
             return result
