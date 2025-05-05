@@ -4,7 +4,7 @@ import copy
 
 def quick_sort(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, None]]:
     """
-    Implementación del algoritmo de Ordenación Rápida (Quick Sort).
+    Implementación del algoritmo de ordenamiento Quick Sort.
     
     Quick sort selecciona un elemento 'pivote' y particiona el array alrededor de él
     de modo que los elementos menores que el pivote estén a la izquierda y los elementos mayores
@@ -12,13 +12,13 @@ def quick_sort(data: List[int], trace: bool = False) -> Union[List[int], Generat
     
     Args:
         data: La lista a ordenar
-        trace: Si es True, genera estados intermedios durante la ordenación
+        trace: Si es True, genera estados intermedios durante el ordenamiento
         
     Returns:
         Si trace es False: La lista ordenada
-        Si trace es True: Un generador que produce pasos del proceso de ordenación
+        Si trace es True: Un generador que produce pasos del proceso de ordenamiento.
     """
-    # Hacer una copia de trabajo para evitar modificar la entrada
+    # Hacemos una copia de trabajo para evitar modificar la entrada
     arr = copy.deepcopy(data)
     
     if trace:
@@ -33,15 +33,15 @@ def _quick_sort_without_trace(arr: List[int], low: int, high: int) -> None:
     Implementación estándar de quick sort (sin seguimiento).
     
     Args:
-        arr: La lista a ordenar (in-place)
+        arr: La lista a ordenar
         low: El índice inicial del subarray a ordenar
         high: El índice final del subarray a ordenar
     """
     if low < high:
-        # Particionar array y obtener índice del pivote
+        # Particionamos el array y obtenemos el índice del pivote
         pivot_idx = _partition(arr, low, high)
         
-        # Ordenar recursivamente los subarrays
+        # Ordenamos recursivamente los subarrays
         _quick_sort_without_trace(arr, low, pivot_idx - 1)
         _quick_sort_without_trace(arr, pivot_idx + 1, high)
 
@@ -88,18 +88,18 @@ def _quick_sort_with_trace(arr: List[int], low: int, high: int) -> Generator[Lis
     Yields:
         La lista en cada paso del proceso de particionado
     """
-    # Solo proceder si hay algo que ordenar
+    # Solo procedemos si hay algo que ordenar
     if low < high:
-        # Generar el estado actual antes de la partición
+        # Generamos el estado actual antes de la partición
         yield copy.deepcopy(arr)
         
-        # Particionar el array
+        # Particionamos el array
         pivot_idx = _partition(arr, low, high)
         
-        # Generar estado después de la partición
+        # Generamos el estado después de la partición
         yield copy.deepcopy(arr)
         
-        # Ordenar recursivamente los subarrays y generar estados intermedios
+        # Ordenamos recursivamente los subarrays y generamos los estados intermedios
         yield from _quick_sort_with_trace(arr, low, pivot_idx - 1)
         yield from _quick_sort_with_trace(arr, pivot_idx + 1, high)
     

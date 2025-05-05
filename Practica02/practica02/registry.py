@@ -7,7 +7,7 @@ from practica02.core.heap import heap_sort
 from practica02.structs.dllist import adapt_sort_algorithm, DoublyLinkedList
 
 
-# Diccionario que mapea nombres de algoritmos a sus implementaciones
+# Diccionario que mapea los nombres de los algoritmos a sus implementaciones
 ALGORITHMS: Dict[str, Callable] = {
     "selection": selection_sort,
     "insertion": insertion_sort,
@@ -16,16 +16,16 @@ ALGORITHMS: Dict[str, Callable] = {
     "heap": heap_sort,
 }
 
-# Diccionario para almacenar versiones adaptadas de algoritmos de ordenación para listas enlazadas
+# Diccionario para almacenar versiones adaptadas de algoritmos de ordenamiento para listas enlazadas
 LINKED_LIST_ALGORITHMS: Dict[str, Callable] = {}
 
 
 def get_algorithm(name: str, use_linked_list: bool = False) -> Callable:
     """
-    Obtiene un algoritmo de ordenación por su nombre.
+    Obtiene un algoritmo de ordenamiento por su nombre.
     
     Args:
-        name: El nombre del algoritmo de ordenación
+        name: El nombre del algoritmo de ordenamiento
         use_linked_list: Si es True, devuelve la versión de lista enlazada del algoritmo
         
     Returns:
@@ -35,12 +35,12 @@ def get_algorithm(name: str, use_linked_list: bool = False) -> Callable:
         ValueError: Si el nombre del algoritmo no es reconocido
     """
     if use_linked_list:
-        # Asegurar que la versión de lista enlazada esté disponible
+        # Asegura que la versión de lista enlazada esté disponible
         if name not in LINKED_LIST_ALGORITHMS:
             if name not in ALGORITHMS:
                 valid_names = list(ALGORITHMS.keys())
                 raise ValueError(f"Algoritmo desconocido: {name}. Las opciones válidas son: {valid_names}")
-            # Adaptar el algoritmo bajo demanda
+            # Adapta el algoritmo bajo demanda
             LINKED_LIST_ALGORITHMS[name] = adapt_sort_algorithm(ALGORITHMS[name])
         return LINKED_LIST_ALGORITHMS[name]
     else:
@@ -52,9 +52,9 @@ def get_algorithm(name: str, use_linked_list: bool = False) -> Callable:
 
 def list_algorithms() -> List[str]:
     """
-    Lista todos los algoritmos de ordenación disponibles.
+    Lista todos los algoritmos de ordenamiento disponibles.
     
     Returns:
-        Una lista de todos los nombres de algoritmos disponibles
+        Una lista de todos los nombres de los algoritmos disponibles
     """
     return list(ALGORITHMS.keys()) 

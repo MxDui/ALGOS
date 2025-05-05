@@ -4,20 +4,20 @@ import copy
 
 def selection_sort(data: List[int], trace: bool = False) -> Union[List[int], Generator[List[int], None, None]]:
     """
-    Implementation of Selection Sort algorithm.
+    Implementación del algoritmo Selection Sort.
     
-    Selection sort works by finding the minimum element from the unsorted part
-    of the array and putting it at the beginning of the unsorted part.
-    
+    Selection sort 
+    Selection sort funciona encontrando el elemento mínimo de la parte sin ordenar del 
+    array y colocándolo al principio de la parte sin ordenar.
     Args:
-        data: The list to be sorted
-        trace: If True, yield intermediate states during sorting
+        data: La lista o el arreglo a ordenar
+        trace: En caso de ser True, produce estados intermedios durante la clasificación
         
     Returns:
-        If trace is False: The sorted list
-        If trace is True: A generator yielding steps of the sorting process
+        Si trace es False: Regresa la lista ordenada
+        Si trace es True: Regresa un generador que produce pasos del proceso de clasificación.
     """
-    # Make a working copy to avoid modifying the input
+    # Hacemos una copia para evitar modificar la entrada.
     arr = copy.deepcopy(data)
     
     if trace:
@@ -28,24 +28,24 @@ def selection_sort(data: List[int], trace: bool = False) -> Union[List[int], Gen
 
 def _selection_sort_without_trace(arr: List[int]) -> List[int]:
     """
-    Standard implementation of selection sort.
+    Implementación de selection sort.
     
     Args:
-        arr: The list to be sorted
+        arr: La lista que será ordenada.
         
     Returns:
-        The sorted list
+        La lista ordenada,
     """
     n = len(arr)
     
     for i in range(n - 1):
-        # Find the minimum element in remaining unsorted array
+        # Encuentra el elemento minimo en el array restante sin ordenar.
         min_idx = i
         for j in range(i + 1, n):
             if arr[j] < arr[min_idx]:
                 min_idx = j
                 
-        # Swap the found minimum element with the first element
+        # Cambiamos el elemento mínimo encontrado por el primer elemento
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
     
     return arr
@@ -53,29 +53,26 @@ def _selection_sort_without_trace(arr: List[int]) -> List[int]:
 
 def _selection_sort_with_trace(arr: List[int]) -> Generator[List[int], None, None]:
     """
-    Selection sort with tracing that yields after each swap.
+    Selection sort con los pasos que produce después de cada intercambio.
     
     Args:
-        arr: The list to be sorted
+        arr: La lista que será ordenada
         
     Yields:
-        The list at each step of the sorting process
+        La lista en cada paso del proceso de ordenamiento.
     """
     n = len(arr)
     
-    # Yield the initial state
     yield copy.deepcopy(arr)
     
     for i in range(n - 1):
-        # Find the minimum element in remaining unsorted array
+        # Encuentra el elemento minimo en el array restante sin ordenar.
         min_idx = i
         for j in range(i + 1, n):
             if arr[j] < arr[min_idx]:
                 min_idx = j
         
-        # Swap the found minimum element with the first element
-        if min_idx != i:  # Only swap if needed
+        # Cambiamos el elemento mínimo encontrado por el primer elemento
+        if min_idx != i:  # Lo cambiamos sólo si es necesario
             arr[i], arr[min_idx] = arr[min_idx], arr[i]
             yield copy.deepcopy(arr)
-    
-    # The generator will be consumed by the calling function 

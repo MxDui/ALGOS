@@ -1,14 +1,13 @@
 # Practica02: Kit Modular de Algoritmos de Ordenamiento
 
-Un paquete Python modular que implementa y analiza algoritmos clásicos de ordenamiento. Este kit proporciona implementaciones correctas y rastreables de los algoritmos de ordenamiento por selección, por inserción, rápido, heap y merge.
+Un paquete Python modular que implementa y analiza algoritmos clásicos de ordenamiento. Este kit proporciona implementaciones de los algoritmos de ordenamiento selection sort, insertion sort, quick sort, heap sort y merge sort. 
 
 ## Características
 
-- Cinco algoritmos clásicos de ordenamiento con capacidad detallada de seguimiento
-- Demostración automática de todos los algoritmos con visualización de pasos
+- Cinco algoritmos de ordenamiento con capacidad de seguimiento
+- Demostración automática de todos los algoritmos con la visualización de los pasos
 - Utilidades de evaluación comparativa para comparar el rendimiento de los algoritmos
-- Implementación opcional de lista doblemente enlazada con los mismos algoritmos
-- Suite completa de pruebas y documentación
+- Implementación de lista doblemente ligada con los mismos algoritmos
 
 ## Instalación
 
@@ -59,10 +58,6 @@ for step in quick_sort([3, 1, 4, 1, 5, 9, 2, 6], trace=True):
 | Ordenamiento Merge         | O(n log n)     | O(n log n)        | O(n log n)    | O(n)     | Sí      |
 | Ordenamiento Heap          | O(n log n)     | O(n log n)        | O(n log n)    | O(1)     | No      |
 
-## Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT - consulte el archivo LICENSE para más detalles.
-
 ## Autor
 
-David Rivera Morales y José Antonio Gallegos Cortés
+David Rivera Morales y José Antonio Gallegos Cortes
